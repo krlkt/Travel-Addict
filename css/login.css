@@ -1,0 +1,17 @@
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    width: 450px;
+    height: 200px;
+    border-radius: 10px;
+    border: var(--gray) 1px;
+    background-color: black;
+}
