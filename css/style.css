@@ -36,8 +36,8 @@ header {
 }
 
 .company_name img {
-    width: 500px;
-    height: 80px;
+    width: 60%;
+    height: 60px;
 }
 
 nav {
@@ -50,6 +50,11 @@ nav a {
     text-decoration: none;
     font-size: 1.5rem;
     color: var(--gray);
+}
+
+a:hover {
+    opacity: .6;
+    text-decoration: underline;
 }
 
 nav ul {

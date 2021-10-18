@@ -12,6 +12,15 @@ main{
     width: 450px;
     height: 200px;
     border-radius: 10px;
-    border: var(--gray) 1px;
-    background-color: black;
+    border: 3px solid var(--gray);
+    padding: 30px;
+}
+
+.login-item {
+    padding: 5px;
+}
+
+#email {
+    right: 0;
+    top: 0;
 }
