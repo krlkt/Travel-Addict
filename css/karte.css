@@ -1,0 +1,13 @@
+
+.karte_image {
+    background-image: url("/img/karte_img.jpg");
+    height: 650px;
+    top: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+}
