@@ -1,0 +1,66 @@
+*{
+    margin: 1;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.reise_form{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+h1{
+    margin-top: 100px;
+}
+
+form{
+    margin-top: 50px;
+}
+
+form input{
+    width: 250px;
+    height: 30px;
+    padding: 0 5px;
+}
+
+form button{
+    width: 30px;
+    height: 30px;
+    background: #ccdeea;
+    color: black;
+    cursor: pointer;
+    outline: none;
+}
+
+.container{
+    margin-top: 20px;
+}
+
+.container ul{
+    list-style: none;
+    width: 500px;
+}
+
+.container ul li{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 5px;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    margin: 5px 0;
+    background: #ccdeea;
+    color: black;
+}
+
+.container ul li span{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    text-align: center;
+    background: rgb(216, 74, 74);
+    font-weight: bold;
+}

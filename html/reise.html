@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Reise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/reise.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/index.html">Home</a>
+                </li>
+                <li>
+                    <a href="/html/karte.html">Karte</a>
+                </li>
+                <li>
+                    <a href="/html/login.html">Login</a>
+                </li>
+            </ul>
+        </nav>
+    <div class = "reise_form">
+        <h1>Hinzufügen oder Entfernen einer Reise</h1>
+        <form>
+            <input type="text" name="text" id="txt" required>
+            <button type="submit" class="btn-list">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+        </form>
+        <div class="container">
+            <ul>
+            </ul>
+        </div>
+        <script>
+            const inputText = document.querySelector('#txt');
+            const btn = document.querySelector('.btn-list');
+            const list = document.querySelector('.container ul');
+
+            btn.addEventListener('click', (e)=>
+            {
+                if(inputText.value != "")
+                {
+                    e.preventDefault();
+
+                    //li
+                    const li = document.createElement('li');
+                    li.innerHTML = inputText.value;
+                    list.appendChild(li);
+                    //span
+                    const span = document.createElement('span');
+                    span.innerHTML = 'X';
+                    li.appendChild(span);
+                }
+                const remove = document.querySelectorAll('span');
+
+                for(let i = 0; i < remove.length; i++)
+                {
+                    remove[i].addEventListener('click', ()=>
+                    {
+                        remove[i].parentElement.style.opacity = 0;
+                        remove[i].parentElement.style.display = "none";
+                    })
+                }
+
+                inputText.value = "";
+            });
+        </script>
+    </div>
+    <br /><br />
+    
+</body>
+
+</html>
