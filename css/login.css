@@ -7,6 +7,7 @@ main{
 .container {
     display: flex;
     min-width: 200px;
+    max-width: 300px;
     justify-content: center;
     align-items: center;
     margin-top: 200px;
