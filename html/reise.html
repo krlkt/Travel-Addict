@@ -12,20 +12,20 @@
 </head>
 
 <body>
-        <nav>
-            <ul>
-                <li>
-                    <a href="/index.html">Home</a>
-                </li>
-                <li>
-                    <a href="/html/karte.html">Karte</a>
-                </li>
-                <li>
-                    <a href="/html/login.html">Login</a>
-                </li>
-            </ul>
-        </nav>
-    <div class = "reise_form">
+    <nav>
+        <ul>
+            <li>
+                <a href="/html/home.html">Home</a>
+            </li>
+            <li>
+                <a href="/html/karte.html">Karte</a>
+            </li>
+            <li>
+                <a href="/index.html">Login</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="reise_form">
         <h1>Hinzufügen oder Entfernen einer Reise</h1>
         <form>
             <input type="text" name="text" id="txt" placeholder="Reise, Startdatum, Enddatum" required>
@@ -42,10 +42,8 @@
             const btn = document.querySelector('.btn-list');
             const list = document.querySelector('.container ul');
 
-            btn.addEventListener('click', (e)=>
-            {
-                if(inputText.value != "")
-                {
+            btn.addEventListener('click', (e) => {
+                if (inputText.value != "") {
                     e.preventDefault();
 
                     //li
@@ -59,10 +57,8 @@
                 }
                 const remove = document.querySelectorAll('span');
 
-                for(let i = 0; i < remove.length; i++)
-                {
-                    remove[i].addEventListener('click', ()=>
-                    {
+                for (let i = 0; i < remove.length; i++) {
+                    remove[i].addEventListener('click', () => {
                         remove[i].parentElement.style.opacity = 0;
                         remove[i].parentElement.style.display = "none";
                     })
@@ -73,7 +69,7 @@
         </script>
     </div>
     <br /><br />
-    
+
 </body>
 
 </html>
