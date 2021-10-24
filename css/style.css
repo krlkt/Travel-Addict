@@ -20,7 +20,7 @@ header {
     background-color: #cccccc;
     background-size: cover;
     width: 100%;
-    height: 650px;
+    height: 900px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -28,21 +28,21 @@ header {
 }
 
 .company_name {
-    grid-column: 2 / 9;
+    grid-column: 2 / 8;
     grid-row: 2 / 4;
     object-fit: contain;
 
 }
 
 .company_name img {
-    width: 60%;
+    width: 400px;
     height: 60px;
 }
 
 nav {
     padding: 10px;
     grid-column: 8 / 12;
-    grid-row: 1 / 3;
+    grid-row: 2 / 3;
 }
 
 nav a {
@@ -67,18 +67,29 @@ nav ul li {
 }
 
 /* Responsive Design */
-@media only screen and (max-width: 860px) {
+@media only screen and (max-width: 1800px) {
+    .sky_image {
+        height: 750px;
+    }
+}
+
+@media only screen and (max-width: 920px) {
     .company_name {
         display: none;
         grid-column: 1 / 1;
         grid-row: 1 / 1;
     }
+    .sky_image {
+        height: 750px;
+    }
 
     nav {
         grid-column: 1 / 13;
     }
+}
 
-    nav > a {
-        font-size: 0.8rem;
+@media only screen and (max-width: 550px) {
+    nav a {
+        font-size: 1.2rem;
     }
 }
