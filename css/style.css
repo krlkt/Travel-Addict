@@ -20,7 +20,7 @@ header {
     background-color: #cccccc;
     background-size: cover;
     width: 100%;
-    height: 650px;
+    height: 900px;
     position: relative;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -67,11 +67,20 @@ nav ul li {
 }
 
 /* Responsive Design */
+@media only screen and (max-width: 1800px) {
+    .sky_image {
+        height: 750px;
+    }
+}
+
 @media only screen and (max-width: 920px) {
     .company_name {
         display: none;
         grid-column: 1 / 1;
         grid-row: 1 / 1;
+    }
+    .sky_image {
+        height: 750px;
     }
 
     nav {
