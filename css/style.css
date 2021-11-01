@@ -35,10 +35,10 @@ body::-webkit-scrollbar-thumb {
 
 main {
     margin-left: 5rem;
-    padding: 1rem;
 }
 
 .sky_image {
+    margin: 0;
     background: url("/img/sky-bg.jpg") no-repeat center;
     background-color: #cccccc;
     background-size: cover;
@@ -67,7 +67,7 @@ main {
     background-color: var(--gray);
     transition: width 200ms ease;
     z-index: 1;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .navbar-nav {

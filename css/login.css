@@ -4,30 +4,109 @@ main{
     align-items: center;
 }
 
+.logo {
+    width: 60%;
+    height: 30px;
+    background: none;
+}
+
+.field {
+    width: 100%;
+    position: relative;
+    border-bottom: 2px dashed var(--gray);
+    margin: 1.8rem auto 1rem; /*top leftright bottom*/
+}
+.label {
+    color: var(--gray);
+    font-size: 1.2rem;
+}
+
+.margintop {
+    margin-top: 3rem;
+}
+
+.input {
+    outline: none;
+    border: none;
+    overflow: hidden;
+    margin: 0;
+    width: 100%;
+    padding: 0.25rem 0;
+    background: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: border 500ms;
+}
+
+.input:invalid {
+    color: rgb(182, 4, 4);
+}
+
 .container {
     display: flex;
-    min-width: 200px;
-    max-width: 300px;
+    flex-direction: column;
+    min-width: 400px;
+    max-width: 1400px;
     justify-content: center;
     align-items: center;
     margin-top: 200px;
     width: 25%;
     border-radius: 10px;
     border: 3px solid var(--gray);
-    padding: 24px 40px;
+    padding: 20px 10px;
 }
 
-input[type=email], input[type=password] {
+.goToIndex {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background-color: var(--gray);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+/* border animation */
+.field::after {
+    content: "";
+    position: relative;
+    display: block;
+    height: 4px;
     width: 100%;
-    padding: 12px 12px;
-    margin-bottom: 10px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+    background: var(--gray);
+    transform: scaleX(0); /* control width */
+    transform-origin: 0%; /* default middle. 0% to make it transform from left to right */
+    transition: transform 500ms ease;
+    top: 2px;
 }
 
-label {
-    margin: 0 0 10px 0;
+.field:focus-within {
+    border-color: transparent;
+}
+
+.field:focus-within::after {
+    transform: scaleX(100%);
+}
+
+/* label animation */
+.label {
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top:35px;
+    transform: translateY(-2rem);
+    transform-origin: 0%;
+    transition: transform 400ms;
+}
+
+.field:focus-within .label,
+.input:not(:placeholder-shown) + .label {
+    transform: scale(0.8) translateY(-5rem);
+    opacity: 1;
 }
 
 button {
@@ -44,16 +123,8 @@ button:hover {
     opacity: 0.8;
 }
 
-.goToIndex {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    background-color: var(--gray);
-    padding: 10px;
-    border-radius: 10px;
-}
-
-a {
-    color: whitesmoke;
-    text-decoration: none;
+@media only screen and (max-width: 480px) {
+    .container {
+        border: none;
+    }
 }
