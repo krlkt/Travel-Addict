@@ -16,11 +16,16 @@
         <a href="/html/home.html">home</a>
     </div>
     <div class="container">
-        <form action="#">
-            <label for="email"><b>E-mail</b></label>
-            <input type="email" id="email" required />
-            <label for="password"><b>Passwort</b></label>
-            <input type="password" id="password" required />
+        <img src="./img/logo.png" class="logo">
+        <form>
+            <div class="field">
+                <input type="email" id="email" class="input" placeholder=" " autocomplete="off" required />
+                <label for="email" class="label"><b>E-mail</b></label>
+            </div>
+            <div class="field margintop">
+                <input type="password" id="password" class="input" placeholder=" " required />
+                <label for="password" class="label"><b>Passwort</b></label>
+            </div>
             <button type="submit">Login</button>
         </form>
     </div>
