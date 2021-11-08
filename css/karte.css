@@ -1,8 +1,12 @@
 
 .karte_image {
     background-image: url("/img/karte_img.jpg");
+    
+}
+
+#karte
+{
     height: 650px;
-    top: 50px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
