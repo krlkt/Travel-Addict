@@ -52,12 +52,15 @@
                     input.push(reise);
                     document.forms[0].reset();
 
+                    localStorage.setItem(reise.name, JSON.stringify(input));
+
                     //li
                     const li = document.createElement('li');
                     li.innerHTML = "Name: " + reise.name + "\n" +
                                     "Startdatum: " + reise.startDatum + "\n" +
                                     "Enddatum: " + reise.endDatum + "\n" +
                                     "Land: " + reise.land;
+                    li.name = reise.name;
                     list.appendChild(li);
                     //span
                     const span = document.createElement('span');
@@ -66,9 +69,11 @@
                 const remove = document.querySelectorAll('span');
 
                 for (let i = 0; i < remove.length; i++) {
-                    remove[i].addEventListener('click', () => {
+                    remove[i].addEventListener('click', () =>
+                    {
                         remove[i].parentElement.style.opacity = 0;
                         remove[i].parentElement.style.display = "none";
+                        localStorage.removeItem(remove[i].parentElement.name);
                     })
                 }
 
