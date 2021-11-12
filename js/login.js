@@ -15,6 +15,7 @@ var userList = [
         password: "will"
     },
     {
+        username: "admin",
         email: "admin@ta",
         password: "admin"
     }
@@ -42,12 +43,10 @@ document.getElementById('login').addEventListener("click", function () {
 
     for (i = 0; i < userList.length; i++) {
         if (email == userList[i].email && password == userList[i].password) {
-            console.log('logged in')
             window.location.replace("https://travel-addict.netlify.app/html/home.html");
             return
         }
     }
-    alert('wrong password')
-
-    console.log('login')
+    document.getElementById('invalidLogin').style.display = "block";
+    document.getElementById('password').value = ''
 })
