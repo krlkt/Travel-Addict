@@ -18,7 +18,14 @@
     <div class="reise_form">
         <h1>Hinzufügen oder Entfernen einer Reise</h1>
         <form>
-            <input type="text" name="text" id="txt" placeholder="Reise, Startdatum, Enddatum" required>
+            <label for="name">Name der Reise</label>
+            <input type="text" id="name"  required>
+            <label for="startDatum">Startdatum</label>
+            <input type="date" id="startDatum"  required>
+            <label for="endDatum">Enddatum</label>
+            <input type="date" id="endDatum"  required>
+            <label for="land">Reiseland</label>
+            <input type="text" id="land"  required>
             <button type="submit" class="btn-list">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </button>
@@ -28,33 +35,48 @@
             </ul>
         </div>
         <script>
-            const inputText = document.querySelector('#txt');
             const btn = document.querySelector('.btn-list');
             const list = document.querySelector('.container ul');
+            let input = [];
 
             btn.addEventListener('click', (e) => {
-                if (inputText.value != "") {
                     e.preventDefault();
+
+                    let reise = 
+                    {
+                        name: document.getElementById('name').value,
+                        startDatum: document.getElementById('startDatum').value,
+                        endDatum: document.getElementById('endDatum').value,
+                        land: document.getElementById('land').value
+                    }
+                    input.push(reise);
+                    document.forms[0].reset();
+
+                    localStorage.setItem(reise.name, JSON.stringify(input));
 
                     //li
                     const li = document.createElement('li');
-                    li.innerHTML = inputText.value;
+                    li.innerHTML = "Name: " + reise.name + "\n" +
+                                    "Startdatum: " + reise.startDatum + "\n" +
+                                    "Enddatum: " + reise.endDatum + "\n" +
+                                    "Land: " + reise.land;
+                    li.name = reise.name;
                     list.appendChild(li);
                     //span
                     const span = document.createElement('span');
                     span.innerHTML = 'X';
                     li.appendChild(span);
-                }
                 const remove = document.querySelectorAll('span');
 
                 for (let i = 0; i < remove.length; i++) {
-                    remove[i].addEventListener('click', () => {
+                    remove[i].addEventListener('click', () =>
+                    {
                         remove[i].parentElement.style.opacity = 0;
                         remove[i].parentElement.style.display = "none";
+                        localStorage.removeItem(remove[i].parentElement.name);
                     })
                 }
 
-                inputText.value = "";
             });
         </script>
     </div>
