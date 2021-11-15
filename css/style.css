@@ -105,6 +105,11 @@ main {
     width: 100%;
 }
 
+/* this will set last child to bottom */
+.nav-item:last-child {
+    margin-top: auto;
+}
+
 .nav-link {
     display: flex;
     align-items: center;
