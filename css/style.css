@@ -136,20 +136,7 @@ main {
     margin: 0 1.5rem;
 }
 
-.icon-primary {
-    color: var(--orange);
-}
-
-.st0 {
-    fill: none;
-    stroke: var(--orange);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-miterlimit: 10;
-}
-
-path {
+.navbar > * path{
     fill: var(--orange);
 }
 

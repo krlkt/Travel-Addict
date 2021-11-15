@@ -43,6 +43,7 @@ document.getElementById('login').addEventListener("click", function () {
 
     for (i = 0; i < userList.length; i++) {
         if (email == userList[i].email && password == userList[i].password) {
+            localStorage.setItem('loggedIn', 'true')
             window.location.replace("https://travel-addict.netlify.app/html/home.html");
             return
         }
