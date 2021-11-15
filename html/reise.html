@@ -39,6 +39,29 @@
             const list = document.querySelector('.container ul');
             let input = [];
 
+            Object.keys(localStorage).forEach(function(key)
+            {
+                const li = document.createElement('li');
+                
+                    li.innerHTML = localStorage.getItem(key);
+                    list.appendChild(li);
+                    li.contentEditable = true;
+
+                    const span = document.createElement('span');
+                    span.innerHTML = 'X';
+                    li.appendChild(span);
+                const remove = document.querySelectorAll('span');
+
+                for (let i = 0; i < remove.length; i++) {
+                    remove[i].addEventListener('click', () =>
+                    {
+                        remove[i].parentElement.style.opacity = 0;
+                        remove[i].parentElement.style.display = "none";
+                        localStorage.removeItem(remove[i].parentElement.name);
+                    })
+                }
+            });
+
             btn.addEventListener('click', (e) => {
                     e.preventDefault();
 
@@ -52,7 +75,11 @@
                     input.push(reise);
                     document.forms[0].reset();
 
-                    localStorage.setItem(reise.name, JSON.stringify(input));
+                    setInterval(function()
+                    {
+                        localStorage.setItem(reise.name, JSON.stringify(input));
+                    }, 1000);
+                    
 
                     //li
                     const li = document.createElement('li');
@@ -62,6 +89,8 @@
                                     "Land: " + reise.land;
                     li.name = reise.name;
                     list.appendChild(li);
+                    li.contentEditable = true;
+                    
                     //span
                     const span = document.createElement('span');
                     span.innerHTML = 'X';
