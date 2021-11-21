@@ -57,6 +57,7 @@
                     var inputLand = document.createElement('input');
                     inputLand.type = "text";
                     inputLand.id = "inputLand";
+                    inputLand.maxLength = "2";
 
                     li.id = "card";
                     
@@ -91,7 +92,6 @@
                     save.innerHTML = "Save";
                     li.appendChild(save);
                     var savedInput = [];
-                    //var savedReise = [];
                     
                     const saves = document.querySelectorAll('#save');
                     for(let i = 0; i < saves.length; i++)
@@ -99,6 +99,7 @@
                         saves[i].addEventListener('click', (s) => {
                             const inputs = saves[i].parentElement.querySelectorAll('input');
                             var lastName = item[0].name;
+
                                 var savedReise = 
                                 {
                                     name: inputs[0].value,
@@ -115,6 +116,7 @@
                             
                         });
                     }
+                    
 
                     //span
                     const span = document.createElement('span');
@@ -167,6 +169,7 @@
                     var inputLand = document.createElement('input');
                     inputLand.type = "text";
                     inputLand.id = "inputLand";
+                    inputLand.maxLength = "2";
 
                     //appending children
                     li.id = "card";
