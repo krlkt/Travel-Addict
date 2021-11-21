@@ -5,11 +5,18 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png	', {
 }).addTo(mymap);
 
 const visitedCountries = [];
-for(let i = 2; i < localStorage.length; i++)
+Object.keys(localStorage).forEach(function(key)
 {
-  var item = JSON.parse(localStorage.getItem(localStorage.key(i)));
-  visitedCountries.push(item[0].land);
-}
+  if(key == 'email' || key == 'loggedIn')
+  {
+    //do nothing
+  }
+  else
+  {
+    var item = JSON.parse(localStorage.getItem(key));
+    visitedCountries.push(item[0].land);
+  }
+});
 
 //visitedCountries = ['DE', 'US', 'RU', 'ID'];
 

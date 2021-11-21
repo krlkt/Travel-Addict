@@ -39,8 +39,9 @@
             const list = document.querySelector('.container ul');
             let input = [];
 
-            for(let i = 2; i < localStorage.length; i++)
+            Object.keys(localStorage).forEach(function(key)
             {
+
                     const li = document.createElement('li');
 
                     //input Elements, ids, types
@@ -58,7 +59,15 @@
                     inputLand.id = "inputLand";
 
                     li.id = "card";
-                    var item = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                    
+
+                    if(key == 'email' || key == 'loggedIn')
+                    {
+                        //do nothing
+                    }
+                    else
+                    {
+                    var item = JSON.parse(localStorage.getItem(key));
 
                     li.innerHTML = "Name: "  + "\n";
                     li.name = item[0].name;
@@ -121,7 +130,8 @@
                             localStorage.removeItem(remove[i].parentElement.name);
                         })
                     }
-            }
+                }
+            });
 
             btn.addEventListener('click', (e) => {
 
