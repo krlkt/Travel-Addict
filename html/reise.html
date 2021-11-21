@@ -39,7 +39,7 @@
             const list = document.querySelector('.container ul');
             let input = [];
 
-            Object.keys(localStorage).forEach(function(key)
+            for(let i = 2; i < localStorage.length; i++)
             {
                     const li = document.createElement('li');
 
@@ -58,7 +58,7 @@
                     inputLand.id = "inputLand";
 
                     li.id = "card";
-                    //var item = JSON.parse(localStorage.getItem(key));
+                    var item = JSON.parse(localStorage.getItem(localStorage.key()));
 
                     li.innerHTML = "Name: "  + "\n";
                     li.name = item[0].name;
@@ -121,7 +121,7 @@
                             localStorage.removeItem(remove[i].parentElement.name);
                         })
                     }
-            });
+            }
 
             btn.addEventListener('click', (e) => {
 
