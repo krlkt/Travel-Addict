@@ -29,7 +29,18 @@ form input{
     width: 250px;
     height: 30px;
     padding: 0 5px;
-    
+    font-size: large;
+    font-family: var(--body_font);
+}
+
+#card input{
+    width: 100%;
+    height: 30px;
+    padding: 0 5px;
+    font-size: large;
+    font-family: var(--body_font);
+    background-color: white;
+    color: #124669;
 }
 
 form button{
@@ -43,33 +54,85 @@ form button{
 
 .container{
     margin-top: 20px;
+    width: 90%;
 }
 
-.container ul{
-    list-style: none;
+.container ul
+{
     width: 100%;
+    display: flex;
+    padding: 3rem;
+    overflow-y: scroll;
 }
 
-.container ul li{
-    width: 280px;
-    height: 160px;
+.container ul::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.container ul::-webkit-scrollbar-thumb {
+    background: #ccdeea;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 2px hsla(0,0%,100%,.25), inset -2px -2px 2px rgba(0,0,0,.25);
+}
+
+.container ul::-webkit-scrollbar-track {
+    background: #ccdeea;
+}
+
+#card{
+    width: 350px;
+    height: 400px;
+    min-width: 250px;
     line-height: 40px;
-    padding: 0 20px;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: -1rem 0 1rem #000;
     position: relative;
     cursor: pointer;
-    display: block;
-    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
     background: #ccdeea;
     color: black;
     white-space: pre-line;
+    transition: .2s;
+    scroll-snap-align: start;
 }
 
-.container ul li span{
+#card:focus-within~#card, #card:hover~#card
+{
+    transform: translateX(130px);
+}
+
+#card:hover
+{
+    transform: translateY(-1rem);
+}
+
+#card:not(:first-child) {
+    margin-left: -130px;
+}
+
+#save
+{
+    position: absolute;
+    height: 1.5rem;
+    width: 80%;
+    bottom: 0;
+    text-align: center;
+    background: black;
+    color: white;
+    font-weight: bold;
+}
+
+
+#card span{
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     width: 50px;
-    text-align: center;
+    text-align:center;
     background: rgb(216, 74, 74);
     font-weight: bold;
 }
