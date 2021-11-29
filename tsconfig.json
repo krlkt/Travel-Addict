@@ -1,5 +1,10 @@
 {
+    "extends": "@tsconfig/node16/tsconfig.json",
+    "ts-node": {
+        "files": true
+    },
     "compilerOptions": {
-        "esModuleInterop": true,
+        "strict": false,
+        "outDir": "./build",
     }
 }

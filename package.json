@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.4"
@@ -9,6 +10,7 @@
     "db": "knex"
   },
   "dependencies": {
+    "@types/node": "^16.11.10",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
     "knex": "^0.95.14",
