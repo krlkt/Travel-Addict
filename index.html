@@ -17,12 +17,12 @@
     </div>
     <div class="container">
         <img src="./img/logo.png" class="logo">
-        <form onsubmit="return false">
+        <form onsubmit="return false" id="loginForm">
             <div class="field">
                 <input type="email" id="email" class="input" placeholder=" " autocomplete="off" />
                 <label for="email" class="label"><b>E-mail</b></label>
             </div>
-            <div class="field margintop">
+            <div class="field">
                 <input type="password" id="password" class="input" placeholder=" " />
                 <label for="password" class="label"><b>Passwort</b></label>
             </div>
@@ -30,7 +30,28 @@
                 <img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;">
                 Falsches Email oder Passwort. <br> Bitte noch einmal versuchen.
             </div>
-            <button id="login">Login</button>
+            <button id="login" class="marginTop marginBottom">Login</button>
+            <a href="./" class="link" id="linkCreateAccount">Noch kein Account? Hier neues Account erstellen</a>
+        </form>
+        <form onsubmit="return false" class="form-hidden" id="createAccountForm">
+            <div class="field">
+                <input type="text" id="sigup_name" class="input" placeholder=" " autocomplete="off" />
+                <label for="username" class="label"><b>Full Name</b></label>
+            </div>
+            <div class="field">
+                <input type="email" id="signup_email" class="input" placeholder=" " autocomplete="off" />
+                <label for="email" class="label"><b>E-mail</b></label>
+            </div>
+            <div class="field">
+                <input type="password" id="signup_password" class="input" placeholder=" " />
+                <label for="password" class="label"><b>Passwort</b></label>
+            </div>
+            <div class="invalidLogin" id="invalidSignup">
+                <img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;">
+                Ungültige Eingabe<br> Bitte noch einmal versuchen.
+            </div>
+            <button id="signup" class="marginTop marginBottom">Sign up</button>
+            <a href="./" class="link" id="linkLogin">Sie haben bereits ein Account? Hier einloggen</a>
         </form>
     </div>
 </main>
