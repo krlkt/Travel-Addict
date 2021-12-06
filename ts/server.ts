@@ -16,7 +16,7 @@ app.get('/users', function (req, res) {
     knex.select().from('users')
         .then(function (user) {
             res.send(user)
-        })
+    })
 })
 
 app.get('/users/:id', function (req, res) {

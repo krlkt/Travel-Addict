@@ -14,15 +14,19 @@ main{
     width: 100%;
     position: relative;
     border-bottom: 2px dashed var(--gray);
-    margin: 1.8rem auto 1rem; /*top leftright bottom*/
+    margin: 2.5rem auto 1rem; /*top leftright bottom*/
 }
 .label {
     color: var(--gray);
     font-size: 1.2rem;
 }
 
-.margintop {
-    margin-top: 3rem;
+.marginTop {
+    margin-top: 0.4rem;
+}
+
+.marginBottom {
+    margin-bottom: 0.4rem;
 }
 
 .input {
@@ -46,14 +50,14 @@ main{
     display: flex;
     flex-direction: column;
     min-width: 400px;
-    max-width: 1400px;
+    max-width: 2000px;
     justify-content: center;
     align-items: center;
     margin-top: 200px;
     width: 25%;
     border-radius: 10px;
     border: 3px solid var(--gray);
-    padding: 20px 10px;
+    padding: 20px 40px;
 }
 
 .goToIndex {
@@ -128,6 +132,18 @@ button:hover {
     border: 1px solid red;
     padding: 5px;
     color: red;
+    display: none;
+}
+
+.link {
+    color: black;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.form-hidden {
     display: none;
 }
 

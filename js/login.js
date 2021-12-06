@@ -21,33 +21,64 @@ var userList = [
     }
 ]
 
-function pageLoad() {
-    const email = localStorage.getItem('email')
+// function pageLoad() {
+//     const email = localStorage.getItem('email')
 
 
-    if (email) {
-        document.getElementById('email').value = email
-    }
-    document.getElementById('email').addEventListener("input", afterInput)
+//     if (email) {
+//         document.getElementById('email').value = email
+//     }
+//     document.getElementById('email').addEventListener("input", afterInput)
 
-}
+// }
 
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)
 }
 
-document.addEventListener('DOMContentLoaded', pageLoad)
-document.getElementById('login').addEventListener("click", function () {
+// document.addEventListener('DOMContentLoaded', pageLoad)
+// document.getElementById('login').addEventListener("click", function () {
+//     var email = document.getElementById('email').value
+//     var password = document.getElementById('password').value
+
+//     for (i = 0; i < userList.length; i++) {
+//         if (email == userList[i].email && password == userList[i].password) {
+//             localStorage.setItem('loggedIn', 'true')
+//             window.location.replace("https://travel-addict.netlify.app/html/home.html");
+//             return
+//         }
+//     }
+//     document.getElementById('invalidLogin').style.display = "block";
+//     document.getElementById('password').value = ''
+// })
+
+document.addEventListener('DOMContentLoaded', () => {
+    const email_ls = localStorage.getItem('email')
     var email = document.getElementById('email').value
     var password = document.getElementById('password').value
 
-    for (i = 0; i < userList.length; i++) {
-        if (email == userList[i].email && password == userList[i].password) {
-            localStorage.setItem('loggedIn', 'true')
-            window.location.replace("https://travel-addict.netlify.app/html/home.html");
-            return
-        }
+    if (email_ls) {
+        document.getElementById('email').value = email_ls
     }
-    document.getElementById('invalidLogin').style.display = "block";
-    document.getElementById('password').value = ''
+    document.getElementById('email').addEventListener("input", afterInput)
+    document.getElementById('login').addEventListener("click", function () {
+        for (i = 0; i < userList.length; i++) {
+            if (email == userList[i].email && password == userList[i].password) {
+                localStorage.setItem('loggedIn', 'true')
+                window.location.replace("https://travel-addict.netlify.app/html/home.html");
+                return
+            }
+        }
+        document.getElementById('invalidLogin').style.display = "block";
+        document.getElementById('password').value = ''
+    })
+
+    const loginForm = document.querySelector("#loginForm");
+    const createAccountForm = document.querySelector("#createAccountForm");
+
+    document.querySelector("#linkCreateAccount").addEventListener("click", e => {
+        e.preventDefault();
+        loginForm.classList.add("form-hidden");
+        createAccountForm.classList.remove("form-hidden");
+    });
 })
