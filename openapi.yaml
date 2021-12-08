@@ -1,0 +1,39 @@
+
+openapi: 3.0.1
+info:
+  title: Travel addict backend
+  description: This is the Travel addict API
+  version: 1.0.0
+externalDocs:
+  description: Github
+  url: http://github.com/example
+servers:
+  - url: https://travel-addict-backend-server.herokuapp.com/
+tags:
+  - name: travel-addict
+    description: Everything about travel addict
+
+paths:
+  /login:
+    post:
+      tags:
+        - login
+      summary: Log in and get cookie for authentication
+      responses:
+        "200":
+          description: Successfull request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
