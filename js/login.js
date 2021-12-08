@@ -1,58 +1,13 @@
-var userList = [
-    {
-        username: "karel",
-        email: "karelkarunia@gmail.com",
-        password: "karel1"
-    },
-    {
-        username: "huehne",
-        email: "huehne@htw-berlin.de",
-        password: "hunter2"
-    },
-    {
-        username: "will",
-        email: "will@htw-berlin.de",
-        password: "will"
-    },
-    {
-        username: "admin",
-        email: "admin@ta",
-        password: "admin"
-    }
-]
+import AuthService from "../services/AuthService";
 
-// function pageLoad() {
-//     const email = localStorage.getItem('email')
-
-
-//     if (email) {
-//         document.getElementById('email').value = email
-//     }
-//     document.getElementById('email').addEventListener("input", afterInput)
-
-// }
+const authService = new AuthService();
 
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)
 }
 
-// document.addEventListener('DOMContentLoaded', pageLoad)
-// document.getElementById('login').addEventListener("click", function () {
-//     var email = document.getElementById('email').value
-//     var password = document.getElementById('password').value
-
-//     for (i = 0; i < userList.length; i++) {
-//         if (email == userList[i].email && password == userList[i].password) {
-//             localStorage.setItem('loggedIn', 'true')
-//             window.location.replace("https://travel-addict.netlify.app/html/home.html");
-//             return
-//         }
-//     }
-//     document.getElementById('invalidLogin').style.display = "block";
-//     document.getElementById('password').value = ''
-// })
-
 document.addEventListener('DOMContentLoaded', () => {
+    // login tab
     const email_ls = localStorage.getItem('email')
     var email = document.getElementById('email').value
     var password = document.getElementById('password').value
@@ -62,17 +17,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     document.getElementById('email').addEventListener("input", afterInput)
     document.getElementById('login').addEventListener("click", function () {
-        for (i = 0; i < userList.length; i++) {
-            if (email == userList[i].email && password == userList[i].password) {
-                localStorage.setItem('loggedIn', 'true')
-                window.location.replace("https://travel-addict.netlify.app/html/home.html");
-                return
-            }
+        if (true) {
+            console.log('logging in')
         }
         document.getElementById('invalidLogin').style.display = "block";
         document.getElementById('password').value = ''
     })
 
+    // sign up tab
+    var signup_name = document.getElementById('signup_name').value
+    var signup_email = document.getElementById('signup_email').value
+    var signup_password = document.getElementById('signup_password').value
+
+    document.getElementById('signup').addEventListener("click", function () {
+        if (signup_name.length < 3) {
+            document.getElementById('invalidSignup').style.display = "block";
+            document.getElementById('invalidSignup').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Ihre Name darf nicht weniger als 3 Zeichen sein';
+            document.getElementById('signup_password').value = ''
+        }
+        else if (signup_password.length < 6) {
+            document.getElementById('invalidSignup').style.display = "block";
+            document.getElementById('invalidSignup').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Passwort muss mindestens 5 Zeichen haben';
+            document.getElementById('signup_password').value = ''
+        }
+        else {
+            authService.create(
+                userName = String(signup_name),
+                email = String(signup_email),
+                password = String(signup_password)
+            ).then(() => {
+                console.log("Created user!");
+            }).catch((e) => {
+                console.error("Error in creating user", e);
+            });
+        }
+    })
+
+    // changing view between login and sign up page
     const loginForm = document.querySelector("#loginForm");
     const createAccountForm = document.querySelector("#createAccountForm");
 

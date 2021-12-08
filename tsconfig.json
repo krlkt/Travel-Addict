@@ -6,5 +6,10 @@
     "compilerOptions": {
         "strict": false,
         "outDir": "./build",
+        "lib": [
+            "es5",
+            "es6",
+            "dom"
+        ]
     }
 }
