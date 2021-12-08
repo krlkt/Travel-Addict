@@ -62,11 +62,7 @@
                     li.id = "card";
                     
 
-                    if(key == 'email' || key == 'loggedIn')
-                    {
-                        //do nothing
-                    }
-                    else
+                    if(key == 'Reisen')
                     {
                     var item = JSON.parse(localStorage.getItem(key));
 
@@ -109,10 +105,11 @@
                                 }
 
                                 savedInput.push(savedReise);
-                                localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
+                                //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
+                                localStorage.setItem("Reisen", JSON.stringify(savedInput));
                                 localStorage.removeItem(lastName);
                                 lastName = savedReise.name;
-                                savedInput.pop();
+                                //savedInput.pop();
                             
                         });
                     }
@@ -151,8 +148,9 @@
                     }
                     input.push(reise);
                     document.forms[0].reset();
-                    localStorage.setItem(reise.name, JSON.stringify(input));
-                    input.pop();
+                    //localStorage.setItem(reise.name, JSON.stringify(input));
+                    localStorage.setItem("Reisen", JSON.stringify(input));
+                    //input.pop();
 
                     //li
                     const li = document.createElement('li');
@@ -212,10 +210,11 @@
                                 }
 
                                 savedInput.push(savedReise);
-                                localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
+                                //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
+                                localStorage.setItem("Reisen", JSON.stringify(savedInput));
                                 localStorage.removeItem(lastName);
                                 lastName = savedReise.name;
-                                savedInput.pop();
+                                //savedInput.pop();
                             
                         });
                     }
