@@ -7,11 +7,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png	', {
 const visitedCountries = [];
 Object.keys(localStorage).forEach(function(key)
 {
-  if(key == 'email' || key == 'loggedIn')
-  {
-    //do nothing
-  }
-  else
+  if(key == 'Reisen')
   {
     var item = JSON.parse(localStorage.getItem(key));
     visitedCountries.push(item[0].land);

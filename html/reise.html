@@ -25,19 +25,21 @@
             <label for="endDatum">Enddatum</label>
             <input type="date" id="endDatum"  required>
             <label for="land">Reiseland</label>
-            <input type="text" id="land"  required>
+            <input id="land" list="dList" required>
+            <datalist id="dList"></datalist>
             <button type="submit" class="btn-list">
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </button>
         </form>
         <div class="container">
-            <ul>
-            </ul>
+            <ul></ul>
         </div>
+        <script language="JavaScript" type="text/javascript" src="/js/getCountries.js"></script>
         <script>
             const btn = document.querySelector('.btn-list');
             const list = document.querySelector('.container ul');
             let input = [];
+
 
             Object.keys(localStorage).forEach(function(key)
             {
@@ -57,14 +59,15 @@
                     var inputLand = document.createElement('input');
                     inputLand.type = "text";
                     inputLand.id = "inputLand";
-                    inputLand.maxLength = "2";
+                    inputLand.setAttribute('list', 'dList');
+                    //inputLand.maxLength = "2";
 
                     li.id = "card";
                     
-
-                    if(key == 'Reisen')
-                    {
                     var item = JSON.parse(localStorage.getItem(key));
+                    if(key == 'Reisen' && item.length != 0)
+                    {
+                    //var item = JSON.parse(localStorage.getItem(key));
 
                     li.innerHTML = "Name: "  + "\n";
                     li.name = item[0].name;
@@ -80,7 +83,7 @@
                     inputEndDatum.defaultValue = item[0].endDatum;
                     li.innerHTML = li.innerHTML + "Land: "  + "\n";
                     li.appendChild(inputLand);
-                    inputLand.defaultValue = item[0].land;
+                    inputLand.defaultValue = item[0].land[0] + item[0].land[1];
                     
                     //save button
                     const save = document.createElement('button')
@@ -101,7 +104,7 @@
                                     name: inputs[0].value,
                                     startDatum: inputs[1].value,
                                     endDatum: inputs[2].value,
-                                    land: inputs[3].value
+                                    land: inputs[3].value[0] + inputs[3].value[1]
                                 }
 
                                 savedInput.push(savedReise);
@@ -126,7 +129,8 @@
                         remove[i].addEventListener('click', () =>
                         {
                             remove[i].parentElement.remove();
-                            localStorage.removeItem(remove[i].parentElement.name);
+                            //localStorage.removeItem(remove[i].parentElement.name);
+                            localStorage.setItem("Reisen", JSON.stringify(savedInput));
                         })
                     }
                 }
@@ -144,7 +148,7 @@
                         name: document.getElementById('name').value,
                         startDatum: document.getElementById('startDatum').value,
                         endDatum: document.getElementById('endDatum').value,
-                        land: document.getElementById('land').value
+                        land: document.getElementById('land').value[0] + document.getElementById('land').value[1]
                     }
                     input.push(reise);
                     document.forms[0].reset();
@@ -167,7 +171,8 @@
                     var inputLand = document.createElement('input');
                     inputLand.type = "text";
                     inputLand.id = "inputLand";
-                    inputLand.maxLength = "2";
+                    inputLand.setAttribute('list', 'dList');
+                    //inputLand.maxLength = "2";
 
                     //appending children
                     li.id = "card";
@@ -185,7 +190,7 @@
                     inputEndDatum.defaultValue = reise.endDatum;
                     li.innerHTML = li.innerHTML + "Land: "  + "\n";
                     li.appendChild(inputLand);
-                    inputLand.defaultValue = reise.land;
+                    inputLand.defaultValue = reise.land[0] + reise.land[1]
                     
                     //save button
                     const save = document.createElement('button')
@@ -206,7 +211,7 @@
                                     name: inputs[0].value,
                                     startDatum: inputs[1].value,
                                     endDatum: inputs[2].value,
-                                    land: inputs[3].value
+                                    land: inputs[3].value[0] + inputs[3].value[1]
                                 }
 
                                 savedInput.push(savedReise);
@@ -230,7 +235,8 @@
                     remove[i].addEventListener('click', () =>
                     {
                         remove[i].parentElement.remove();
-                        localStorage.removeItem(remove[i].parentElement.name);
+                        //localStorage.removeItem(remove[i].parentElement.name);
+                        localStorage.setItem("Reisen", JSON.stringify(savedInput));
                     })
                 }
                 }
