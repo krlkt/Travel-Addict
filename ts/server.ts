@@ -2,6 +2,7 @@ import express, { Request } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import AuthService from "../services/AuthService";
+import ReiseService from "../services/ReiseService";
 import * as OpenApiValidator from "express-openapi-validator";
 import { HttpError } from "express-openapi-validator/dist/framework/types";
 import { knex as knexDriver } from "knex";
@@ -12,6 +13,7 @@ const port = 8080
 
 const knex = knexDriver(config);
 const authService = new AuthService()
+const reiseService = new ReiseService(knex);
 
 app.use(express.json())
 app.use(cookieParser());
@@ -133,6 +135,73 @@ app.post("/login", async (req, res) => {
     });
     res.json({ status: "ok" });
 });
+
+app.get('/reisen', function (req, res)
+{
+    knex.select().from('reisen')
+        .then(function (reise)
+        {
+            res.send(reise)
+        })
+})
+    
+app.get('/reisen/:id', function (req, res)
+{
+    knex.select().from('reisen').where('id', req.params.id)
+        .then(function (reise)
+        {
+            res.send(reise)
+        })
+})
+
+app.post("/reisen", (req, res) =>
+{
+    knex('reisen').insert(
+    {
+        name: req.body.name,
+        startDatum: req.body.startDatum,
+        endDatum: req.body.endDatum,
+        land: req.body.land
+    }).then(function ()
+    {
+        knex.select().from('reisen').then(function (reisen)
+        {
+            res.send(reisen)
+        })
+    })
+ })
+
+app.put('/reisen/:id', (req, res) =>
+{
+     knex('reisen').where('id', req.params.id)
+        .update(
+        {
+            name: req.body.name,
+            startDatum: req.body.startDatum,
+            endDatum: req.body.endDatum,
+            land: req.body.land
+        }).then(function ()
+        {
+            knex.select().from('reisen').then(function (reisen)
+            {
+                res.send(reisen)
+            })
+        })
+})
+
+app.delete('/reisen/:id', (req, res) =>
+{
+    knex('reisen').where('id', req.params.id).del()
+        .then(function ()
+        {
+            knex.select().from('reisen').then(function (reisen)
+            {
+                res.send(reisen)
+            })
+        })
+})
+
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

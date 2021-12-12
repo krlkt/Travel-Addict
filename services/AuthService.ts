@@ -19,7 +19,7 @@ const knex = Knex(config);
 // though to turn the non-promise code into code that
 // does return Promises and can hence be `await`ed.
 const getAsync = promisify(client.get).bind(client);
-const setExAsync = promisify(client.setex).bind(client);
+const setExAsync = promisify(client.setEx).bind(client);
 
 interface User {
     email: string;
