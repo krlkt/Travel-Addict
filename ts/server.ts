@@ -72,12 +72,13 @@ app.use(
     }
 );
 
-// app.get('/users', function (req, res) {
-//     knex.select().from('users')
-//         .then(function (user) {
-//             res.send(user)
-//         })
-// })
+app.get('/users', function (req, res) {
+    knex.select().from('users')
+        .then(function (user) {
+            res.status(200)
+            res.send(user)
+        })
+})
 
 // app.get('/users/:id', function (req, res) {
 //     knex.select().from('users').where('id', req.params.id)
@@ -120,6 +121,10 @@ app.use(
 
 app.post("/login", async (req, res) => {
     const payload = req.body;
+    if (!payload.email || !payload.password) {
+        res.status(400);
+        return res.json({ message: "Missing required parameter" });
+    }
     const sessionId = await authService.login(payload.email, payload.password);
     if (!sessionId) {
         res.status(401);
