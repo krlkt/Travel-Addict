@@ -141,66 +141,53 @@ app.post("/login", async (req, res) => {
     res.json({ status: "ok" });
 });
 
-app.get('/reisen', function (req, res)
-{
+app.get('/reisen', function (req, res) {
     knex.select().from('reisen')
-        .then(function (reise)
-        {
+        .then(function (reise) {
             res.send(reise)
         })
 })
-    
-app.get('/reisen/:id', function (req, res)
-{
+
+app.get('/reisen/:id', function (req, res) {
     knex.select().from('reisen').where('id', req.params.id)
-        .then(function (reise)
-        {
+        .then(function (reise) {
             res.send(reise)
         })
 })
 
-app.post("/reisen", (req, res) =>
-{
+app.post("/reisen", (req, res) => {
     knex('reisen').insert(
-    {
-        name: req.body.name,
-        startDatum: req.body.startDatum,
-        endDatum: req.body.endDatum,
-        land: req.body.land
-    }).then(function ()
-    {
-        knex.select().from('reisen').then(function (reisen)
-        {
-            res.send(reisen)
-        })
-    })
- })
-
-app.put('/reisen/:id', (req, res) =>
-{
-     knex('reisen').where('id', req.params.id)
-        .update(
         {
             name: req.body.name,
             startDatum: req.body.startDatum,
             endDatum: req.body.endDatum,
             land: req.body.land
-        }).then(function ()
-        {
-            knex.select().from('reisen').then(function (reisen)
-            {
+        }).then(function () {
+            knex.select().from('reisen').then(function (reisen) {
                 res.send(reisen)
             })
         })
 })
 
-app.delete('/reisen/:id', (req, res) =>
-{
-    knex('reisen').where('id', req.params.id).del()
-        .then(function ()
-        {
-            knex.select().from('reisen').then(function (reisen)
+app.put('/reisen/:id', (req, res) => {
+    knex('reisen').where('id', req.params.id)
+        .update(
             {
+                name: req.body.name,
+                startDatum: req.body.startDatum,
+                endDatum: req.body.endDatum,
+                land: req.body.land
+            }).then(function () {
+                knex.select().from('reisen').then(function (reisen) {
+                    res.send(reisen)
+                })
+            })
+})
+
+app.delete('/reisen/:id', (req, res) => {
+    knex('reisen').where('id', req.params.id).del()
+        .then(function () {
+            knex.select().from('reisen').then(function (reisen) {
                 res.send(reisen)
             })
         })

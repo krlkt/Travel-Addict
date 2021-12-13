@@ -26,6 +26,7 @@ const express_1 = __importDefault(require("express"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const AuthService_1 = __importDefault(require("../services/AuthService"));
+const ReiseService_1 = __importDefault(require("../services/ReiseService"));
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
 const knex_1 = require("knex");
 const knexfile_1 = __importDefault(require("../knexfile"));
@@ -33,6 +34,7 @@ const app = (0, express_1.default)();
 const port = 8080;
 const knex = (0, knex_1.knex)(knexfile_1.default);
 const authService = new AuthService_1.default();
+const reiseService = new ReiseService_1.default(knex);
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // install middleware (open api validator)
@@ -130,6 +132,51 @@ app.post("/login", async (req, res) => {
         secure: process.env.NODE_ENV === "production",
     });
     res.json({ status: "ok" });
+});
+app.get('/reisen', function (req, res) {
+    knex.select().from('reisen')
+        .then(function (reise) {
+        res.send(reise);
+    });
+});
+app.get('/reisen/:id', function (req, res) {
+    knex.select().from('reisen').where('id', req.params.id)
+        .then(function (reise) {
+        res.send(reise);
+    });
+});
+app.post("/reisen", (req, res) => {
+    knex('reisen').insert({
+        name: req.body.name,
+        startDatum: req.body.startDatum,
+        endDatum: req.body.endDatum,
+        land: req.body.land
+    }).then(function () {
+        knex.select().from('reisen').then(function (reisen) {
+            res.send(reisen);
+        });
+    });
+});
+app.put('/reisen/:id', (req, res) => {
+    knex('reisen').where('id', req.params.id)
+        .update({
+        name: req.body.name,
+        startDatum: req.body.startDatum,
+        endDatum: req.body.endDatum,
+        land: req.body.land
+    }).then(function () {
+        knex.select().from('reisen').then(function (reisen) {
+            res.send(reisen);
+        });
+    });
+});
+app.delete('/reisen/:id', (req, res) => {
+    knex('reisen').where('id', req.params.id).del()
+        .then(function () {
+        knex.select().from('reisen').then(function (reisen) {
+            res.send(reisen);
+        });
+    });
 });
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
