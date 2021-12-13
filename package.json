@@ -23,6 +23,9 @@
     "postinstall": "tsc",
     "build": "tsc"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "@types/node": "^16.11.10",
     "@types/cors": "^2.8.12",
