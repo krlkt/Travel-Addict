@@ -31,7 +31,7 @@ const OpenApiValidator = __importStar(require("express-openapi-validator"));
 const knex_1 = require("knex");
 const knexfile_1 = __importDefault(require("../knexfile"));
 const app = (0, express_1.default)();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const knex = (0, knex_1.knex)(knexfile_1.default);
 const authService = new AuthService_1.default();
 const reiseService = new ReiseService_1.default(knex);
@@ -72,48 +72,6 @@ app.use((err, req, res, next) => {
         errors: err.errors,
     });
 });
-app.get('/users', function (req, res) {
-    knex.select().from('users')
-        .then(function (user) {
-        res.status(200);
-        res.send(user);
-    });
-});
-// app.get('/users/:id', function (req, res) {
-//     knex.select().from('users').where('id', req.params.id)
-//         .then(function (user) {
-//             res.send(user)
-//         })
-// })
-// app.post("/users", (req, res) => {
-//     knex('users').insert({
-//         name: req.body.name,
-//         email: req.body.email
-//     }).then(function () {
-//         knex.select().from('users').then(function (users) {
-//             res.send(users)
-//         })
-//     })
-// })
-// app.put('/users/:id', (req, res) => {
-//     knex('users').where('id', req.params.id)
-//         .update({
-//             name: req.body.name,
-//             email: req.body.email
-//         }).then(function () {
-//             knex.select().from('users').then(function (users) {
-//                 res.send(users)
-//             })
-//         })
-// })
-// app.delete('/users/:id', (req, res) => {
-//     knex('users').where('id', req.params.id).del()
-//         .then(function () {
-//             knex.select().from('users').then(function (users) {
-//                 res.send(users)
-//             })
-//         })
-// })
 app.post("/login", async (req, res) => {
     const payload = req.body;
     if (!payload.email || !payload.password) {
@@ -133,28 +91,17 @@ app.post("/login", async (req, res) => {
     });
     res.json({ status: "ok" });
 });
-app.get('/reisen', function (req, res) {
-    knex.select().from('reisen')
-        .then(function (reise) {
-        res.send(reise);
-    });
+app.post("/reisen", (req, res) => {
+    const payload = req.body;
+    reiseService.add(payload).then((newEntry) => res.send(newEntry));
+});
+app.get("/reisen", checkLogin, (req, res) => {
+    reiseService.getAll().then((total) => res.send(total));
 });
 app.get('/reisen/:id', function (req, res) {
     knex.select().from('reisen').where('id', req.params.id)
         .then(function (reise) {
         res.send(reise);
-    });
-});
-app.post("/reisen", (req, res) => {
-    knex('reisen').insert({
-        name: req.body.name,
-        startDatum: req.body.startDatum,
-        endDatum: req.body.endDatum,
-        land: req.body.land
-    }).then(function () {
-        knex.select().from('reisen').then(function (reisen) {
-            res.send(reisen);
-        });
     });
 });
 app.put('/reisen/:id', (req, res) => {

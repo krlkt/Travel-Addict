@@ -3,7 +3,7 @@ import { Knex } from "knex";
 export async function up(knex: Knex): Promise<void> {
     return knex.schema
         .createTable('reisen', function (table) {
-            table.increments('id');
+            table.uuid('id').primary();
             table.string('name', 255).notNullable();
             table.date('startDatum').notNullable();
             table.date('endDatum').notNullable();

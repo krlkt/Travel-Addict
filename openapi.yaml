@@ -14,6 +14,48 @@ tags:
     description: Everything about travel addict
 
 paths:
+  /reisen:
+    get:
+      tags:
+        - reise
+      summary: Get all reise
+      responses:
+        "200":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SavedReise'
+    post:
+      tags:
+        - reise
+      summary: add a new reise
+      responses:
+        "200":
+          description: Successfully added a reise
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reise'
+
+  /reisen/{uuid}:
+    delete:
+      tags:
+        - reise
+      summary: Deletes a reise by uuid
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: uuid of the entry to delete
+      responses:
+        "204":
+          description: successful operation
   /login:
     post:
       tags:
@@ -29,6 +71,29 @@ paths:
 
 components:
   schemas:
+    Reise:
+      type: object
+      properties:
+        name:
+          type: string
+        startDatum:
+          type: string
+          format: date-time
+        endDatum:
+          type: string
+          format: date-time
+        land:
+          type: string
+    SavedReise:
+      allOf:
+        - $ref: '#/components/schemas/Reise'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              format: uuid
     Login:
       type: object
       properties:

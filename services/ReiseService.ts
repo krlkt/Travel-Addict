@@ -36,14 +36,6 @@ class ReiseService {
   async getAll(): Promise<Reise[]> {
     return this.knex("reisen");
   }
-/*
-  async getTotal(): Promise<number> {
-    const response = await this.knex<SavedReise>("reisen")
-      .sum("value")
-      .first();
-    return response?.sum || 0;
-  }
-  */
 }
 
 export default ReiseService;

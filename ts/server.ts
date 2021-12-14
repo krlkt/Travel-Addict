@@ -74,53 +74,6 @@ app.use(
     }
 );
 
-app.get('/users', function (req, res) {
-    knex.select().from('users')
-        .then(function (user) {
-            res.status(200)
-            res.send(user)
-        })
-})
-
-// app.get('/users/:id', function (req, res) {
-//     knex.select().from('users').where('id', req.params.id)
-//         .then(function (user) {
-//             res.send(user)
-//         })
-// })
-
-// app.post("/users", (req, res) => {
-//     knex('users').insert({
-//         name: req.body.name,
-//         email: req.body.email
-//     }).then(function () {
-//         knex.select().from('users').then(function (users) {
-//             res.send(users)
-//         })
-//     })
-// })
-
-// app.put('/users/:id', (req, res) => {
-//     knex('users').where('id', req.params.id)
-//         .update({
-//             name: req.body.name,
-//             email: req.body.email
-//         }).then(function () {
-//             knex.select().from('users').then(function (users) {
-//                 res.send(users)
-//             })
-//         })
-// })
-
-// app.delete('/users/:id', (req, res) => {
-//     knex('users').where('id', req.params.id).del()
-//         .then(function () {
-//             knex.select().from('users').then(function (users) {
-//                 res.send(users)
-//             })
-//         })
-// })
-
 app.post("/login", async (req, res) => {
     const payload = req.body;
     if (!payload.email || !payload.password) {
@@ -141,59 +94,22 @@ app.post("/login", async (req, res) => {
     res.json({ status: "ok" });
 });
 
-app.get('/reisen', function (req, res) {
-    knex.select().from('reisen')
-        .then(function (reise) {
-            res.send(reise)
-        })
-})
+app.post("/reisen", checkLogin, (req, res) => {
+    const payload = req.body;
+    reiseService.add(payload).then((newEntry) => res.send(newEntry));
+});
 
-app.get('/reisen/:id', function (req, res) {
-    knex.select().from('reisen').where('id', req.params.id)
-        .then(function (reise) {
-            res.send(reise)
-        })
-})
+app.get("/reisen", async (req, res) => {
+    reiseService.getAll().then((total) => res.send(total));
+});
 
-app.post("/reisen", (req, res) => {
-    knex('reisen').insert(
-        {
-            name: req.body.name,
-            startDatum: req.body.startDatum,
-            endDatum: req.body.endDatum,
-            land: req.body.land
-        }).then(function () {
-            knex.select().from('reisen').then(function (reisen) {
-                res.send(reisen)
-            })
-        })
-})
-
-app.put('/reisen/:id', (req, res) => {
-    knex('reisen').where('id', req.params.id)
-        .update(
-            {
-                name: req.body.name,
-                startDatum: req.body.startDatum,
-                endDatum: req.body.endDatum,
-                land: req.body.land
-            }).then(function () {
-                knex.select().from('reisen').then(function (reisen) {
-                    res.send(reisen)
-                })
-            })
-})
-
-app.delete('/reisen/:id', (req, res) => {
-    knex('reisen').where('id', req.params.id).del()
-        .then(function () {
-            knex.select().from('reisen').then(function (reisen) {
-                res.send(reisen)
-            })
-        })
-})
-
-
+app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
+    const id = req.params.reiseId;
+    reiseService.delete(id).then(() => {
+        res.status(204);
+        res.send();
+    });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
