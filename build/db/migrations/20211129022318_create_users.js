@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.down = exports.up = void 0;
 async function up(knex) {
     return knex.schema
-        .createTableIfNotExists('users', function (table) {
+        .createTable('users', function (table) {
+        table.uuid('id').primary();
         table.string('email').notNullable();
         table.string('password').notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());

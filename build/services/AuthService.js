@@ -26,8 +26,9 @@ class AuthService {
         const salt = await bcrypt_1.default.genSalt();
         const passwordHash = await bcrypt_1.default.hash(newUser.password, salt);
         await knex("users").insert({
+            id: crypto_1.default.randomUUID(),
             ...newUser,
-            password: passwordHash,
+            password: passwordHash
         });
     }
     async delete(email) {

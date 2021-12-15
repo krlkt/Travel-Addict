@@ -22,7 +22,6 @@ const getAsync = promisify(client.get).bind(client);
 const setExAsync = promisify(client.setex).bind(client);
 
 interface User {
-    id: string;
     email: string;
     password: string;
 }
@@ -32,9 +31,9 @@ class AuthService {
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(newUser.password, salt);
         await knex("users").insert({
+            id: crypto.randomUUID(),
             ...newUser,
-            password: passwordHash,
-            id: crypto.randomUUID()
+            password: passwordHash
         });
     }
 

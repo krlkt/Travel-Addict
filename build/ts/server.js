@@ -47,10 +47,6 @@ app.use((0, cors_1.default)({
     origin: true,
     credentials: true,
 }));
-const userA = authService.create({
-    email: "user@example.org",
-    password: "hunter2",
-});
 const checkLogin = async (req, res, next) => {
     const session = req.cookies.session;
     if (!session) {
@@ -91,38 +87,18 @@ app.post("/login", async (req, res) => {
     });
     res.json({ status: "ok" });
 });
-app.post("/reisen", (req, res) => {
+app.post("/reisen", checkLogin, (req, res) => {
     const payload = req.body;
     reiseService.add(payload).then((newEntry) => res.send(newEntry));
 });
-app.get("/reisen", checkLogin, (req, res) => {
+app.get("/reisen", async (req, res) => {
     reiseService.getAll().then((total) => res.send(total));
 });
-app.get('/reisen/:id', function (req, res) {
-    knex.select().from('reisen').where('id', req.params.id)
-        .then(function (reise) {
-        res.send(reise);
-    });
-});
-app.put('/reisen/:id', (req, res) => {
-    knex('reisen').where('id', req.params.id)
-        .update({
-        name: req.body.name,
-        startDatum: req.body.startDatum,
-        endDatum: req.body.endDatum,
-        land: req.body.land
-    }).then(function () {
-        knex.select().from('reisen').then(function (reisen) {
-            res.send(reisen);
-        });
-    });
-});
-app.delete('/reisen/:id', (req, res) => {
-    knex('reisen').where('id', req.params.id).del()
-        .then(function () {
-        knex.select().from('reisen').then(function (reisen) {
-            res.send(reisen);
-        });
+app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
+    const id = req.params.reiseId;
+    reiseService.delete(id).then(() => {
+        res.status(204);
+        res.send();
     });
 });
 app.listen(port, () => {
