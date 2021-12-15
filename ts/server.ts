@@ -91,7 +91,10 @@ app.post("/login", async (req, res) => {
 
 app.post("/reisen", checkLogin, (req, res) => {
     const payload = req.body;
-    reiseService.add(payload).then((newEntry) => res.send(newEntry));
+    reiseService.add(payload).then((newEntry) => {
+        res.status(201);
+        res.send(newEntry);
+    });
 });
 
 app.get("/reisen", async (req, res) => {
@@ -103,6 +106,16 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     reiseService.delete(id).then(() => {
         res.status(204);
         res.send();
+    });
+});
+
+app.patch("/reisen/:reiseId", checkLogin, (req, res) =>
+{
+    const id = req.params.reiseId;
+    const payload = req.body;
+    reiseService.update(id, payload).then((newEntry) => {
+        res.status(200);
+        res.send(newEntry);
     });
 });
 

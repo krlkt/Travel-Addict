@@ -33,6 +33,11 @@ class ReiseService {
     await this.knex("reisen").where({ id: uuid }).delete();
   }
 
+  async update(uuid: string, newReise: Reise): Promise<void>
+  {
+    await this.knex("reisen").where({id: uuid}).update(newReise);
+  }
+
   async getAll(): Promise<Reise[]> {
     return this.knex("reisen");
   }
