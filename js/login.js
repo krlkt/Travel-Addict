@@ -1,6 +1,7 @@
-// import AuthService from "../services/AuthService";
+import AuthService from "../build/services/AuthService";
 
-// const authService = new AuthService();
+const authService = new AuthService();
+// const authService = require('../services/AuthServiceAuthService')
 
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)
@@ -25,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // sign up tab
-    var signup_name = document.getElementById('signup_name').value
-    var signup_email = document.getElementById('signup_email').value
-    var signup_password = document.getElementById('signup_password').value
-
     document.getElementById('signup').addEventListener("click", function () {
+        var signup_name = document.getElementById('signup_name').value
+        var signup_email = document.getElementById('signup_email').value
+        var signup_password = document.getElementById('signup_password').value
+
         if (signup_name.length < 3) {
             document.getElementById('invalidSignup').style.display = "block";
             document.getElementById('invalidSignup').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Ihre Name darf nicht weniger als 3 Zeichen sein';
