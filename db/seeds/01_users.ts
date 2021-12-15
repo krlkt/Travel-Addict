@@ -6,12 +6,12 @@ export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex("users").del();
   const salt = await bcrypt.genSalt();
-  const karel1passwordHash = await bcrypt.hash('karel1', salt);
+  const hunterpasswordHash = await bcrypt.hash('hunter2', salt);
   const adminpasswordHash = await bcrypt.hash('admin', salt);
 
   // Inserts seed entries
   await knex("users").insert([
-    { email: 'karelkarunia24@gmail.com', password: karel1passwordHash },
-    { email: 'admin@ta', password: adminpasswordHash },
+    { id: '1eaae687-ad09-4824-b53d-0d7563d98080', email: 'huehne@htw-berlin.de', password: hunterpasswordHash },
+    { id: '24ce658d-9a12-4783-96ad-924464e68080', email: 'admin@ta', password: adminpasswordHash },
   ]);
 };

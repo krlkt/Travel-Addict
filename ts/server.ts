@@ -34,11 +34,6 @@ app.use(
     })
 );
 
-const userA = authService.create({
-    email: "user@example.org",
-    password: "hunter2",
-});
-
 const checkLogin = async (
     req: Request,
     res: express.Response,
