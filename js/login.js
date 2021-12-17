@@ -1,8 +1,3 @@
-import AuthService from "../build/services/AuthService";
-
-const authService = new AuthService();
-// const authService = require('../services/AuthServiceAuthService')
-
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)
 }
@@ -42,15 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('signup_password').value = ''
         }
         else {
-            authService.create(
-                email = String(signup_email),
-                password = String(signup_password)
-            ).then(() => {
-                console.log("Created user!");
-                alert("created user")
-            }).catch((e) => {
-                console.error("Error in creating user", e);
-            });
+            
         }
     })
 
