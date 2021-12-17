@@ -63,8 +63,15 @@
                     //inputLand.maxLength = "2";
 
                     li.id = "card";
-                    
-                    var item = JSON.parse(localStorage.getItem(key));
+                    try
+                    {
+                        var item = JSON.parse(localStorage.getItem(key));
+                    }
+                    catch(e)
+                    {
+                        
+                    }
+                   
                     if(key == 'Reisen' && item.length != 0)
                     {
                     //var item = JSON.parse(localStorage.getItem(key));
