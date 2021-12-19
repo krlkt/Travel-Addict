@@ -40,14 +40,46 @@
             const list = document.querySelector('.container ul');
             let input = [];
 
-
-            Object.keys(localStorage).forEach(function (key) {
-
+            document.addEventListener('DOMContentLoaded', async () => {
                 const getExpenses = async () => {
-                    const response = await fetch(`http://localhost:8080/expenses`);
+                    const response = await fetch(`http://localhost:8080/reisen`);
                     const json = await response.json();
                     return json;
                 }
+                const response = await fetch("http://localhost:8080/reisen", {
+                    method: 'GET'
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+                const addReisenResponse = await fetch("http://localhost:8080/reisen", {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        "name": "Will's Reise to Bali",
+                        "startDatum": "2018-04-19",
+                        "endDatum": "2018-05-19",
+                        "land": "DE",
+                        "user_id": "24ce658d-9a12-4783-96ad-924464e68080"
+                    })
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            })
+
+            Object.keys(localStorage).forEach(function (key) {
+
+
+
                 const li = document.createElement('li');
 
                 //input Elements, ids, types
