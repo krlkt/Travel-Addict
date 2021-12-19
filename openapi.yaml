@@ -9,6 +9,7 @@ externalDocs:
   url: http://github.com/example
 servers:
   - url: https://travel-addict-backend-server.herokuapp.com/
+  - url: http://localhost:8080/
 tags:
   - name: travel-addict
     description: Everything about travel addict
