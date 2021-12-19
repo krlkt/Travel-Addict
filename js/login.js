@@ -1,35 +1,88 @@
-// import AuthService from "../services/AuthService";
+const form = document.querySelector('#loginForm');
 
-// const authService = new AuthService();
+const email = document.querySelector('input[id="email"]');
+const password = document.querySelector('input[id="password"]');
+
+const BASE_URL = "http://localhost:8080";
 
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+const login = async (email, password) => {
+    console.log(email)
+    console.log(password)
+    const loginUrl = `${BASE_URL}/login`;
+
+    const response = await fetch(loginUrl, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    });
+    return response.status === 200;
+}
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    login(email.value, password.value)
+        .then(wasSuccessfulLogin => {
+            if (wasSuccessfulLogin) {
+                console.log('great!');
+                // loginError.classList.add('hidden');
+                // getExpenses().then(displayExpenses);
+            } else {
+                // loginError.classList.remove('hidden')
+                console.log('unsuccessful login')
+            }
+        })
+})
+document.addEventListener('DOMContentLoaded', async () => {
     // login tab
     const email_ls = localStorage.getItem('email')
-    var email = document.getElementById('email').value
-    var password = document.getElementById('password').value
 
     if (email_ls) {
         document.getElementById('email').value = email_ls
     }
     document.getElementById('email').addEventListener("input", afterInput)
-    document.getElementById('login').addEventListener("click", function () {
-        if (true) {
-            console.log('logging in')
-        }
-        document.getElementById('invalidLogin').style.display = "block";
-        document.getElementById('password').value = ''
-    })
+    // document.getElementById('login').addEventListener("click", function () {
+    //     var email = document.getElementById('email').value
+    //     var password = document.getElementById('password').value
+    //     const loginData = { email: email, password: password };
+
+    //     fetch('http://localhost:8080/login', {
+    //         method: 'POST',
+    //         mode: 'cors',
+    //         credentials: 'include',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             email: email,
+    //             password: password
+    //         }),
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log('Success:', data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //         });
+    //     // document.getElementById('invalidLogin').style.display = "block";
+    //     // document.getElementById('password').value = ''
+    // })
 
     // sign up tab
-    var signup_name = document.getElementById('signup_name').value
-    var signup_email = document.getElementById('signup_email').value
-    var signup_password = document.getElementById('signup_password').value
-
     document.getElementById('signup').addEventListener("click", function () {
+        var signup_name = document.getElementById('signup_name').value
+        var signup_email = document.getElementById('signup_email').value
+        var signup_password = document.getElementById('signup_password').value
+
         if (signup_name.length < 3) {
             document.getElementById('invalidSignup').style.display = "block";
             document.getElementById('invalidSignup').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Ihre Name darf nicht weniger als 3 Zeichen sein';
@@ -41,15 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('signup_password').value = ''
         }
         else {
-            authService.create(
-                email = String(signup_email),
-                password = String(signup_password)
-            ).then(() => {
-                console.log("Created user!");
-                alert("created user")
-            }).catch((e) => {
-                console.error("Error in creating user", e);
-            });
+            // register an account
         }
     })
 

@@ -15,6 +15,25 @@ const knex = knexDriver(config);
 const authService = new AuthService()
 const reiseService = new ReiseService(knex);
 
+// cors options
+var whitelist = ['http://127.0.0.1:5500/']
+
+var corsOptions = {
+    origin: function (origin, callback) {
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+    },
+    credentials: true
+};
+
+app.options("/login", function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.sendStatus(200);
+});
+
 app.use(express.json())
 app.use(cookieParser());
 
@@ -29,10 +48,12 @@ app.use(
 
 app.use(
     cors({
-        origin: true,
-        credentials: true,
+        origin: 'http://127.0.0.1:5500',
+        credentials: true
     })
 );
+
+// app.options('/login', cors()) // enable pre-flight request for login post request
 
 const checkLogin = async (
     req: Request,

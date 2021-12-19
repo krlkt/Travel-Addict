@@ -20,6 +20,9 @@ class ReiseService {
     async delete(uuid) {
         await this.knex("reisen").where({ id: uuid }).delete();
     }
+    async update(uuid, newReise) {
+        await this.knex("reisen").where({ id: uuid }).update(newReise);
+    }
     async getAll() {
         return this.knex("reisen");
     }

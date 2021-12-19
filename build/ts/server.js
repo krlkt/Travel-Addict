@@ -30,6 +30,7 @@ const ReiseService_1 = __importDefault(require("../services/ReiseService"));
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
 const knex_1 = require("knex");
 const knexfile_1 = __importDefault(require("../knexfile"));
+const bodyParser = require('body-parser');
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 const knex = (0, knex_1.knex)(knexfile_1.default);
@@ -44,8 +45,8 @@ app.use(OpenApiValidator.middleware({
     validateResponses: false,
 }));
 app.use((0, cors_1.default)({
-    origin: true,
-    credentials: true,
+    origin: "http://127.0.0.1:5500",
+    credentials: true
 }));
 const checkLogin = async (req, res, next) => {
     const session = req.cookies.session;
@@ -89,7 +90,10 @@ app.post("/login", async (req, res) => {
 });
 app.post("/reisen", checkLogin, (req, res) => {
     const payload = req.body;
-    reiseService.add(payload).then((newEntry) => res.send(newEntry));
+    reiseService.add(payload).then((newEntry) => {
+        res.status(201);
+        res.send(newEntry);
+    });
 });
 app.get("/reisen", async (req, res) => {
     reiseService.getAll().then((total) => res.send(total));
@@ -99,6 +103,14 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     reiseService.delete(id).then(() => {
         res.status(204);
         res.send();
+    });
+});
+app.patch("/reisen/:reiseId", checkLogin, (req, res) => {
+    const id = req.params.reiseId;
+    const payload = req.body;
+    reiseService.update(id, payload).then((newEntry) => {
+        res.status(200);
+        res.send(newEntry);
     });
 });
 app.listen(port, () => {
