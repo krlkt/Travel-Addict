@@ -33,11 +33,16 @@ form.addEventListener('submit', (event) => {
         .then(wasSuccessfulLogin => {
             if (wasSuccessfulLogin) {
                 console.log('great!');
-                // loginError.classList.add('hidden');
+                document.getElementById('invalidLogin').style.display = "none";
                 // getExpenses().then(displayExpenses);
+                // window.location.href = '/html/reisen';
+
             } else {
                 // loginError.classList.remove('hidden')
                 console.log('unsuccessful login')
+                document.getElementById('invalidLogin').style.display = "block";
+                document.getElementById('invalidLogin').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Login fehlgeschlagen';
+                document.getElementById('signup_password').value = ''
             }
         })
 })
