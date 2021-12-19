@@ -109,7 +109,7 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     });
 });
 
-app.patch("/reisen/:reiseId", checkLogin, (req, res) =>
+app.put("/reisen/:reiseId", checkLogin, (req, res) =>
 {
     const id = req.params.reiseId;
     const payload = req.body;
