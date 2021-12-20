@@ -167,12 +167,11 @@
                                 startDatum: inputs[1].value,
                                 endDatum: inputs[2].value,
                                 land: inputs[3].value[0] + inputs[3].value[1]
-                                //get user id
                             }
 
                             //savedInput.push(savedReise);
                             //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                            postReise(savedReise);
+                            putReise(lastReise.id, savedReise);
                             //localStorage.removeItem(lastName);
                             deleteReise(lastReise.id);
                             lastReise = savedReise;
@@ -282,7 +281,7 @@
                             //savedInput.push(savedReise);
                             //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
                             //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                            postReise(savedReise);
+                            putReise(lastReise.id, savedReise);
                             //localStorage.removeItem(lastName);
                             deleteReise(lastReise.id);
                             //lastName = savedReise.name;
