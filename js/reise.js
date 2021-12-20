@@ -2,6 +2,7 @@ const btn = document.querySelector('.btn-list');
 const list = document.querySelector('.container ul');
 let input = [];
 var storedReisen = []
+const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
 
 document.addEventListener('DOMContentLoaded', async () => {
     /*

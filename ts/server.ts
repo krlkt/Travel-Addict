@@ -12,6 +12,7 @@ const app = express()
 const port = process.env.PORT || 8080;
 // const originURL = process.env.NODE_ENV === "production" ? "https://travel-addict.netlify.app" : "http://127.0.0.1:5500"
 const originURL = "https://travel-addict.netlify.app"
+// const originURL = "http://127.0.0.1:5500"
 
 const knex = knexDriver(config);
 const authService = new AuthService()
