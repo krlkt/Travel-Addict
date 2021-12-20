@@ -42,7 +42,7 @@ app.use(
 
 app.use(
     cors({
-        origin: 'http://127.0.0.1:5500',
+        origin: ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app/'],
         credentials: true
     })
 );
@@ -124,8 +124,7 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     });
 });
 
-app.put("/reisen/:reiseId", checkLogin, (req, res) =>
-{
+app.put("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     const payload = req.body;
     reiseService.update(id, payload).then((newEntry) => {
