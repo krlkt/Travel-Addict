@@ -16,13 +16,13 @@ const authService = new AuthService()
 const reiseService = new ReiseService(knex);
 
 app.options("/*", function (req, res, next) {
-    // const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app/'];
-    // const origin = req.headers.origin;
-    // if (allowedOrigins.includes(origin)) {
-    //     res.setHeader('Access-Control-Allow-Origin', origin);
-    // }
+    const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app/'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
     // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-    res.header('Access-Control-Allow-Origin', 'https://travel-addict.netlify.app/');
+    res.header('Access-Control-Allow-Origin', 'travel-addict.netlify.app/');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
