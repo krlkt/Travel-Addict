@@ -15,8 +15,14 @@ const knex = knexDriver(config);
 const authService = new AuthService()
 const reiseService = new ReiseService(knex);
 
-app.options("/login", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+app.options("/*", function (req, res, next) {
+    const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app/'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Origin', 'https://travel-addict.netlify.app');
+    // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -37,7 +43,8 @@ app.use(
 
 app.use(
     cors({
-        origin: 'http://127.0.0.1:5500',
+        origin: 'https://travel-addict.netlify.app',
+        // origin: 'http://127.0.0.1:5500',
         credentials: true
     })
 );
@@ -119,8 +126,7 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     });
 });
 
-app.put("/reisen/:reiseId", checkLogin, (req, res) =>
-{
+app.patch("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     const payload = req.body;
     reiseService.update(id, payload).then((newEntry) => {
