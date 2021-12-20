@@ -33,10 +33,10 @@ form.addEventListener('submit', (event) => {
     login(email.value, password.value)
         .then(wasSuccessfulLogin => {
             if (wasSuccessfulLogin) {
-                console.log('great!');
+                console.log('great! you are logged in!');
                 document.getElementById('invalidLogin').style.display = "none";
                 // getExpenses().then(displayExpenses);
-                // window.location.href = '/html/reisen';
+                window.location.href = '/html/home.html';
 
             } else {
                 // loginError.classList.remove('hidden')

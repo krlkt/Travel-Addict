@@ -16,7 +16,7 @@ const authService = new AuthService()
 const reiseService = new ReiseService(knex);
 
 app.options("/*", function (req, res, next) {
-    const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app/'];
+    const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
@@ -102,6 +102,7 @@ app.post("/login", async (req, res) => {
         httpOnly: true,
         sameSite: "none",
         secure: process.env.NODE_ENV === "production",
+        // path: "/"
     });
     res.json({ status: "ok" });
 });
@@ -126,7 +127,7 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     });
 });
 
-app.patch("/reisen/:reiseId", checkLogin, (req, res) => {
+app.put("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     const payload = req.body;
     reiseService.update(id, payload).then((newEntry) => {
