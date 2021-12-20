@@ -41,42 +41,64 @@
             let input = [];
 
             document.addEventListener('DOMContentLoaded', async () => {
-                const getExpenses = async () => {
+                /*
+                const getReisen = async () => {
                     const response = await fetch(`http://localhost:8080/reisen`);
                     const json = await response.json();
                     return json;
-                }
-                const response = await fetch("http://localhost:8080/reisen", {
+                }*/
+                const getReise = await fetch("http://localhost:8080/reisen", {
                     method: 'GET'
                 }).then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-
+                    .then(storedReisen => {
+                        console.log('Success:', storedReisen);
                     })
                     .catch((error) => {
                         console.error('Error:', error);
                     });
 
-                const addReisenResponse = await fetch("http://localhost:8080/reisen", {
+                const postReise = (reise) => await fetch("http://localhost:8080/reisen", {
                     method: 'POST',
-                    body: JSON.stringify({
+                    body: JSON.stringify({reise
+                        /*
                         "name": "Will's Reise to Bali",
                         "startDatum": "2018-04-19",
                         "endDatum": "2018-05-19",
                         "land": "DE",
                         "user_id": "24ce658d-9a12-4783-96ad-924464e68080"
+                        */
                     })
                 }).then(response => response.json())
                     .then(data => {
                         console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
 
+                const deleteReise = (reiseId) => await fetch("http://localhost:8080/reisen", {
+                    method: 'DELETE',
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+
+                const putReise = (reiseId, reise) => await fetch("http://localhost:8080/reisen", {
+                    method: 'PUT',
+                    body: JSON.stringify({reise})
+                }).then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
                     })
                     .catch((error) => {
                         console.error('Error:', error);
                     });
             })
 
-            Object.keys(localStorage).forEach(function (key) {
+            Object.keys(storedReisen).forEach(function (key) {
 
 
 
@@ -100,13 +122,14 @@
 
                 li.id = "card";
                 try {
-                    var item = JSON.parse(localStorage.getItem(key));
+                    //var item = JSON.parse(localStorage.getItem(key));
+                    var item = JSON.parse(storedReisen[key])
                 }
                 catch (e) {
 
                 }
 
-                if (key == 'Reisen' && item.length != 0) {
+                if (item.length != 0) {
                     //var item = JSON.parse(localStorage.getItem(key));
 
                     li.innerHTML = "Name: " + "\n";
@@ -136,7 +159,7 @@
                     for (let i = 0; i < saves.length; i++) {
                         saves[i].addEventListener('click', (s) => {
                             const inputs = saves[i].parentElement.querySelectorAll('input');
-                            var lastName = item[0].name;
+                            var lastReise = item[0];
 
                             var savedReise =
                             {
@@ -144,15 +167,18 @@
                                 startDatum: inputs[1].value,
                                 endDatum: inputs[2].value,
                                 land: inputs[3].value[0] + inputs[3].value[1]
+                                //get user id
                             }
 
-                            savedInput.push(savedReise);
-                            //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
-                            localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                            localStorage.removeItem(lastName);
-                            lastName = savedReise.name;
-                            //savedInput.pop();
+                            //savedInput.push(savedReise);
+                            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            postReise(savedReise);
+                            //localStorage.removeItem(lastName);
+                            deleteReise(lastReise.id);
+                            lastReise = savedReise;
+                            //lastName = savedReise.name;
 
+                            //savedInput.pop();
                         });
                     }
 
@@ -168,7 +194,8 @@
                         remove[i].addEventListener('click', () => {
                             remove[i].parentElement.remove();
                             //localStorage.removeItem(remove[i].parentElement.name);
-                            localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            deleteReise(remove[i].parentElement.id);
                         })
                     }
                 }
@@ -187,10 +214,12 @@
                         endDatum: document.getElementById('endDatum').value,
                         land: document.getElementById('land').value[0] + document.getElementById('land').value[1]
                     }
-                    input.push(reise);
+                    //input.push(reise);
                     document.forms[0].reset();
                     //localStorage.setItem(reise.name, JSON.stringify(input));
-                    localStorage.setItem("Reisen", JSON.stringify(input));
+                    //localStorage.setItem("Reisen", JSON.stringify(input));
+                    postReise(reise);
+
                     //input.pop();
 
                     //li
@@ -241,7 +270,7 @@
                     for (let i = 0; i < saves.length; i++) {
                         saves[i].addEventListener('click', (s) => {
                             const inputs = saves[i].parentElement.querySelectorAll('input');
-                            var lastName = reise.name;
+                            var lastReise = reise;
                             var savedReise =
                             {
                                 name: inputs[0].value,
@@ -250,11 +279,14 @@
                                 land: inputs[3].value[0] + inputs[3].value[1]
                             }
 
-                            savedInput.push(savedReise);
+                            //savedInput.push(savedReise);
                             //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
-                            localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                            localStorage.removeItem(lastName);
-                            lastName = savedReise.name;
+                            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            postReise(savedReise);
+                            //localStorage.removeItem(lastName);
+                            deleteReise(lastReise.id);
+                            //lastName = savedReise.name;
+                            lastReise = savedReise;
                             //savedInput.pop();
 
                         });
@@ -271,7 +303,8 @@
                         remove[i].addEventListener('click', () => {
                             remove[i].parentElement.remove();
                             //localStorage.removeItem(remove[i].parentElement.name);
-                            localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            deleteReise(remove[i].parentElement.id);
                         })
                     }
                 }
