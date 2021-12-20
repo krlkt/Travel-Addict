@@ -29,6 +29,7 @@ class ReiseService {
     return newReise;
   }
 
+  // TODO make sure only reisen belonged to user can delete their reisen
   async delete(uuid: string): Promise<void> {
     await this.knex("reisen").where({ id: uuid }).delete();
   }

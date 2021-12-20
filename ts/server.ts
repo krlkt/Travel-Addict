@@ -15,6 +15,8 @@ const knex = knexDriver(config);
 const authService = new AuthService()
 const reiseService = new ReiseService(knex);
 
+app.use(cookieParser());
+
 app.options("/*", function (req, res, next) {
     const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app'];
     const origin = req.headers.origin;
@@ -30,7 +32,6 @@ app.options("/*", function (req, res, next) {
 });
 
 app.use(express.json())
-app.use(cookieParser());
 
 // install middleware (open api validator)
 app.use(
@@ -48,8 +49,6 @@ app.use(
         credentials: true
     })
 );
-
-// app.options('/login', cors()) // enable pre-flight request for login post request
 
 const checkLogin = async (
     req: Request,
@@ -97,13 +96,12 @@ app.post("/login", async (req, res) => {
         res.status(401);
         return res.json({ message: "Bad email or password" });
     }
-    res.cookie("session", sessionId, {
-        maxAge: 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: "none",
-        secure: process.env.NODE_ENV === "production",
-        // path: "/"
-    });
+    // res.cookie("session", sessionId, {
+    //     maxAge: 60 * 160 * 1000,
+    //     httpOnly: true,
+    //     sameSite: process.env.NODE_ENV === "production" ? "none" : undefined,
+    //     secure: process.env.NODE_ENV === "production",
+    // });
     res.json({ status: "ok" });
 });
 
@@ -123,6 +121,7 @@ app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     reiseService.delete(id).then(() => {
         res.status(204);
+        res.json({ message: "reise deleted" });
         res.send();
     });
 });

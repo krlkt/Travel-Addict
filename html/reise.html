@@ -63,8 +63,10 @@
             var reiseObject = {}
 
             const postReise = async (reiseObject) => {
-                const postReise = await fetch("http://localhost:8080/reisen", {
+                const postReise = await fetch("https://travel-addict-backend-server.herokuapp.com", {
                     method: 'POST',
+                    mode: "cors",
+                    credentials: true,
                     body: JSON.stringify(
                         reiseObject
                         /*
