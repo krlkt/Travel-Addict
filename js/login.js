@@ -3,8 +3,8 @@ const form = document.querySelector('#loginForm');
 const email = document.querySelector('input[id="email"]');
 const password = document.querySelector('input[id="password"]');
 
-const BASE_URL = "http://localhost:8080";
-// const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
+// const BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
 
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)

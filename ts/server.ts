@@ -21,7 +21,8 @@ app.options("/*", function (req, res, next) {
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
-    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+    res.header('Access-Control-Allow-Origin', 'https://travel-addict.netlify.app/');
+    // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -42,7 +43,8 @@ app.use(
 
 app.use(
     cors({
-        origin: 'http://127.0.0.1:5500',
+        origin: 'https://travel-addict.netlify.app',
+        // origin: 'http://127.0.0.1:5500',
         credentials: true
     })
 );
