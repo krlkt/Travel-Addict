@@ -11,7 +11,7 @@ import config from "../knexfile";
 const app = express()
 const port = process.env.PORT || 8080;
 // const originURL = process.env.NODE_ENV === "production" ? "https://travel-addict.netlify.app" : "http://127.0.0.1:5500"
-const originURL = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app']
+const originURL = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app', 'https://travel-addict.netlify.app/html/reise.html']
 // const originURL = "http://127.0.0.1:5500"
 
 const knex = knexDriver(config);
