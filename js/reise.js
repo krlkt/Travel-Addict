@@ -4,22 +4,19 @@ let input = [];
 var storedReisen = []
 const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
 
+
 document.addEventListener('DOMContentLoaded', async () => {
-    /*
-    const getReisen = async () => {
-        const response = await fetch(`http://localhost:8080/reisen`);
-        const json = await response.json();
-        return json;
-    }*/
-    const getReise = await fetch(`${BASE_URL}/reisen`, {
+    const getReisen = await fetch(`${BASE_URL}/reisen`, {
         method: 'GET'
     }).then(response => response.json())
         .then(reisenList => {
+
             console.log('Success:', reisenList);
             storedReisen = reisenList;
 
             for(let i = 0; i < storedReisen.length; i++)
             {
+                
                 const li = document.createElement('li');
             
                 //input Elements, ids, types
@@ -43,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     //var item = JSON.parse(localStorage.getItem(key));
                     //var item = JSON.parse(storedReisen[i])
                     var item = storedReisen[i];
-                    //console.log(item)
+                    //console.log(document.cookie);
                     
                 }
                 catch (e) {
@@ -52,7 +49,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 if (item.length != 0) {
                     
-            
+                    //if storedReisen[i].user_id == current user id, then display cards
+                    //if(item.user_id == document.cookie)
+                    {
+
                     li.innerHTML = "Name: " + "\n";
                     li.name = item.name;
                     list.appendChild(li);
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     for (let i = 0; i < saves.length; i++) {
                         saves[i].addEventListener('click', (s) => {
                             const inputs = saves[i].parentElement.querySelectorAll('input');
-                            var lastReise = item[0];
+                            var lastReise = item.name;
             
                             var savedReise =
                             {
@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         })
                     }
                 }
+            }
             }
         })
         .catch((error) => {
