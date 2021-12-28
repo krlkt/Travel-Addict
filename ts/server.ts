@@ -38,7 +38,6 @@ app.options("/*", function (req, res, next) {
 app.use(express.json())
 
 // install middleware (open api validator)
-/*
 app.use(
     OpenApiValidator.middleware({
         apiSpec: "./openapi.yaml",
@@ -46,7 +45,7 @@ app.use(
         validateResponses: false,
     })
 );
-*/
+
 app.use(
     cors({
         origin: originURL,
