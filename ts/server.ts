@@ -24,9 +24,9 @@ app.options("/*", function (req, res, next) {
     const allowedOrigins = ['http://127.0.0.1:5500', 'http://127.0.0.1:5555', 'https://travel-addict.netlify.app'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Origin', '*');
     }
-    res.header('Access-Control-Allow-Origin', originURL);
+    res.header('Access-Control-Allow-Origin', '*');
     // res.header('Access-Control-Allow-Origin', 'https://travel-addict.netlify.app');
     // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -38,7 +38,6 @@ app.options("/*", function (req, res, next) {
 app.use(express.json())
 
 // install middleware (open api validator)
-/*
 app.use(
     OpenApiValidator.middleware({
         apiSpec: "./openapi.yaml",
@@ -46,7 +45,7 @@ app.use(
         validateResponses: false,
     })
 );
-*/
+
 app.use(
     cors({
         origin: originURL,
