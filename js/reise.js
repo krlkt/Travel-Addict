@@ -19,6 +19,109 @@ document.addEventListener('DOMContentLoaded', async () => {
         .then(reisenList => {
             console.log('Success:', reisenList);
             storedReisen = reisenList;
+
+            for(let i = 0; i < storedReisen.length; i++)
+            {
+                const li = document.createElement('li');
+            
+                //input Elements, ids, types
+                var inputName = document.createElement('input');
+                inputName.type = "text";
+                inputName.id = "inputName";
+                var inputStartDatum = document.createElement('input');
+                inputStartDatum.type = "date";
+                inputStartDatum.id = "inputStartDatum";
+                var inputEndDatum = document.createElement('input');
+                inputEndDatum.type = "date";
+                inputEndDatum.id = "inputEndDatum";
+                var inputLand = document.createElement('input');
+                inputLand.type = "text";
+                inputLand.id = "inputLand";
+                inputLand.setAttribute('list', 'dList');
+                //inputLand.maxLength = "2";
+            
+                li.id = "card";
+                try {
+                    //var item = JSON.parse(localStorage.getItem(key));
+                    //var item = JSON.parse(storedReisen[i])
+                    var item = storedReisen[i];
+                    //console.log(item)
+                    
+                }
+                catch (e) {
+                        console.log("invalid item error");
+                }
+                
+                if (item.length != 0) {
+                    
+            
+                    li.innerHTML = "Name: " + "\n";
+                    li.name = item.name;
+                    list.appendChild(li);
+            
+                    li.appendChild(inputName);
+                    inputName.defaultValue = item.name;
+                    li.innerHTML = li.innerHTML + "Startdatum: " + "\n";
+                    li.appendChild(inputStartDatum);
+                    inputStartDatum.defaultValue = item.startDatum.substring(0,10);
+                    li.innerHTML = li.innerHTML + "Enddatum: " + "\n";
+                    li.appendChild(inputEndDatum);
+                    inputEndDatum.defaultValue = item.endDatum.substring(0,10);
+                    li.innerHTML = li.innerHTML + "Land: " + "\n";
+                    li.appendChild(inputLand);
+                    inputLand.defaultValue = item.land[0] + item.land[1];
+            
+                    //save button
+                    const save = document.createElement('button')
+                    save.id = "save";
+                    save.innerHTML = "Save";
+                    li.appendChild(save);
+                    var savedInput = [];
+            
+                    const saves = document.querySelectorAll('#save');
+                    for (let i = 0; i < saves.length; i++) {
+                        saves[i].addEventListener('click', (s) => {
+                            const inputs = saves[i].parentElement.querySelectorAll('input');
+                            var lastReise = item[0];
+            
+                            var savedReise =
+                            {
+                                name: inputs[0].value,
+                                startDatum: inputs[1].value,
+                                endDatum: inputs[2].value,
+                                land: inputs[3].value[0] + inputs[3].value[1]
+                            }
+            
+                            //savedInput.push(savedReise);
+                            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            putReise(lastReise.id, savedReise);
+                            //localStorage.removeItem(lastName);
+                            deleteReise(lastReise.id);
+                            lastReise = savedReise;
+                            //lastName = savedReise.name;
+            
+                            //savedInput.pop();
+                        });
+                    }
+            
+            
+                    //span
+                    const span = document.createElement('span');
+                    span.innerHTML = 'X';
+                    span.contentEditable = false;
+                    li.appendChild(span);
+                    const remove = document.querySelectorAll('span');
+            
+                    for (let i = 0; i < remove.length; i++) {
+                        remove[i].addEventListener('click', () => {
+                            remove[i].parentElement.remove();
+                            //localStorage.removeItem(remove[i].parentElement.name);
+                            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                            deleteReise(remove[i].parentElement.id);
+                        })
+                    }
+                }
+            }
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -79,105 +182,7 @@ const putReise = async (id, reiseObject) => {
         });
 }
 
-Object.keys(storedReisen).forEach(function (key) {
-    const li = document.createElement('li');
 
-    //input Elements, ids, types
-    var inputName = document.createElement('input');
-    inputName.type = "text";
-    inputName.id = "inputName";
-    var inputStartDatum = document.createElement('input');
-    inputStartDatum.type = "date";
-    inputStartDatum.id = "inputStartDatum";
-    var inputEndDatum = document.createElement('input');
-    inputEndDatum.type = "date";
-    inputEndDatum.id = "inputEndDatum";
-    var inputLand = document.createElement('input');
-    inputLand.type = "text";
-    inputLand.id = "inputLand";
-    inputLand.setAttribute('list', 'dList');
-    //inputLand.maxLength = "2";
-
-    li.id = "card";
-    try {
-        //var item = JSON.parse(localStorage.getItem(key));
-        var item = JSON.parse(storedReisen[key])
-        console.log(item);
-    }
-    catch (e) {
-
-    }
-
-    if (item.length != 0) {
-        //var item = JSON.parse(localStorage.getItem(key));
-
-        li.innerHTML = "Name: " + "\n";
-        li.name = item[0].name;
-        list.appendChild(li);
-
-        li.appendChild(inputName);
-        inputName.defaultValue = item[0].name;
-        li.innerHTML = li.innerHTML + "Startdatum: " + "\n";
-        li.appendChild(inputStartDatum);
-        inputStartDatum.defaultValue = item[0].startDatum;
-        li.innerHTML = li.innerHTML + "Enddatum: " + "\n";
-        li.appendChild(inputEndDatum);
-        inputEndDatum.defaultValue = item[0].endDatum;
-        li.innerHTML = li.innerHTML + "Land: " + "\n";
-        li.appendChild(inputLand);
-        inputLand.defaultValue = item[0].land[0] + item[0].land[1];
-
-        //save button
-        const save = document.createElement('button')
-        save.id = "save";
-        save.innerHTML = "Save";
-        li.appendChild(save);
-        var savedInput = [];
-
-        const saves = document.querySelectorAll('#save');
-        for (let i = 0; i < saves.length; i++) {
-            saves[i].addEventListener('click', (s) => {
-                const inputs = saves[i].parentElement.querySelectorAll('input');
-                var lastReise = item[0];
-
-                var savedReise =
-                {
-                    name: inputs[0].value,
-                    startDatum: inputs[1].value,
-                    endDatum: inputs[2].value,
-                    land: inputs[3].value[0] + inputs[3].value[1]
-                }
-
-                //savedInput.push(savedReise);
-                //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                putReise(lastReise.id, savedReise);
-                //localStorage.removeItem(lastName);
-                deleteReise(lastReise.id);
-                lastReise = savedReise;
-                //lastName = savedReise.name;
-
-                //savedInput.pop();
-            });
-        }
-
-
-        //span
-        const span = document.createElement('span');
-        span.innerHTML = 'X';
-        span.contentEditable = false;
-        li.appendChild(span);
-        const remove = document.querySelectorAll('span');
-
-        for (let i = 0; i < remove.length; i++) {
-            remove[i].addEventListener('click', () => {
-                remove[i].parentElement.remove();
-                //localStorage.removeItem(remove[i].parentElement.name);
-                //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                deleteReise(remove[i].parentElement.id);
-            })
-        }
-    }
-});
 
 // plus button
 btn.addEventListener('click', (e) => {
