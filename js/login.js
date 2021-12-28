@@ -36,9 +36,9 @@ form.addEventListener('submit', (event) => {
             if (wasSuccessfulLogin) {
                 console.log('great! you are logged in!');
                 document.getElementById('invalidLogin').style.display = "none";
-                // getExpenses().then(displayExpenses);
+                //getExpenses().then(displayExpenses);
                 window.location.href = '/html/home.html';
-
+                
             } else {
                 // loginError.classList.remove('hidden')
                 console.log('unsuccessful login')
