@@ -12,7 +12,7 @@ const app = express()
 const port = process.env.PORT || 8080;
 // const originURL = process.env.NODE_ENV === "production" ? "https://travel-addict.netlify.app" : "http://127.0.0.1:5500"
 const originURL = "https://travel-addict.netlify.app"
-// const originURL = "http://127.0.0.1:5500"
+//const originURL = "http://127.0.0.1:5500"
 
 const knex = knexDriver(config);
 const authService = new AuthService()
@@ -21,12 +21,12 @@ const reiseService = new ReiseService(knex);
 app.use(cookieParser());
 
 app.options("/*", function (req, res, next) {
-    const allowedOrigins = ['http://127.0.0.1:5500', 'https://travel-addict.netlify.app'];
+    const allowedOrigins = ['http://127.0.0.1:5500', 'http://127.0.0.1:5555', 'https://travel-addict.netlify.app'];
     const origin = req.headers.origin;
     if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Origin', '*');
     }
-    res.header('Access-Control-Allow-Origin', originURL);
+    res.header('Access-Control-Allow-Origin', '*');
     // res.header('Access-Control-Allow-Origin', 'https://travel-addict.netlify.app');
     // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
