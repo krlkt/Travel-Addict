@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 var reiseObject = {}
 
 const postReise = async (reiseObject) => {
-    const postReise = await fetch(`${BASE_URL}/reisen`, {
+    const postReiseResponse = await fetch(`${BASE_URL}/reisen`, {
         method: 'POST',
         mode: "cors",
         credentials: 'include',
