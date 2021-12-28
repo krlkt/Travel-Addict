@@ -100,6 +100,7 @@ Object.keys(storedReisen).forEach(function (key) {
     try {
         //var item = JSON.parse(localStorage.getItem(key));
         var item = JSON.parse(storedReisen[key])
+        console.log(item);
     }
     catch (e) {
 
