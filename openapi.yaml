@@ -57,6 +57,45 @@ paths:
       responses:
         "204":
           description: successful operation
+
+  /reisen/{user_id}:
+    delete:
+      tags:
+        - reise
+      summary: Deletes a reise by uuid
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: uuid of the entry to delete
+      responses:
+        "204":
+          description: successful operation
+    get:
+      tags:
+        - reise
+      summary: Get all reise by user id
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: user id of the entry to get
+      responses:
+        "200":
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SavedReise'
+
   /login:
     post:
       tags:
