@@ -25,7 +25,7 @@ interface User {
     email: string;
     password: string;
 }
-
+ 
 class AuthService {
     async create(newUser: User): Promise<void> {
         const salt = await bcrypt.genSalt();
