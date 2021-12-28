@@ -42,6 +42,10 @@ class ReiseService {
   async getAll(): Promise<Reise[]> {
     return this.knex("reisen");
   }
+
+  async getReisenByUserId(userId: string): Promise<Reise[]> {
+    return this.knex("reisen").where({user_id: userId});
+  }
 }
 
 export default ReiseService;

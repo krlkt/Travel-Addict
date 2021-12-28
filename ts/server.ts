@@ -10,9 +10,10 @@ import config from "../knexfile";
 
 const app = express()
 const port = process.env.PORT || 8080;
-// const originURL = process.env.NODE_ENV === "production" ? "https://travel-addict.netlify.app" : "http://127.0.0.1:5500"
-const originURL = ['http://127.0.0.1:5500', 'http://127.0.0.1:5555', 'https://travel-addict.netlify.app', 'https://travel-addict.netlify.app/html/reise.html']
-// const originURL = "http://127.0.0.1:5500"
+
+const originURL = ['http://127.0.0.1:5500', 'http://127.0.0.1:5555', 'https://travel-addict.netlify.app',
+    'https://travel-addict.netlify.app/html/reise.html', 'http://127.0.0.1:5500/html/reise.html',
+    'http://127.0.0.1:5555/html/reise.html']
 
 const knex = knexDriver(config);
 const authService = new AuthService()
@@ -48,9 +49,6 @@ app.use(
 
 app.use(
     cors({
-        // origin: originURL,
-        // origin: 'https://travel-addict.netlify.app',
-        // origin: 'http://127.0.0.1:5500',
         credentials: true
     })
 );
@@ -61,8 +59,7 @@ app.use((req, res, next) => {
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
-    //res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5050');
-    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
     return next();
@@ -133,6 +130,11 @@ app.post("/reisen", checkLogin, (req, res) => {
 
 app.get("/reisen", async (req, res) => {
     reiseService.getAll().then((total) => res.send(total));
+});
+
+app.get("/reisen/:userId", async (req, res) => {
+    const userId = req.params.userId
+    reiseService.getReisenByUserId(userId).then((filteredReisen) => res.send(filteredReisen));
 });
 
 app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
