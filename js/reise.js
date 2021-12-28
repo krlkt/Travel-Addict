@@ -29,10 +29,7 @@ const postReise = async (reiseObject) => {
     const postReise = await fetch(`${BASE_URL}/reisen`, {
         method: 'POST',
         mode: "cors",
-        credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        credentials: true,
         body: JSON.stringify(
             reiseObject
             /*
