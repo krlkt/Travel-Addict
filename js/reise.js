@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const json = await response.json();
         return json;
     }*/
+    console.log(document.cookie)
+
     const getReise = await fetch(`${BASE_URL}/reisen`, {
         method: 'GET'
     }).then(response => response.json())

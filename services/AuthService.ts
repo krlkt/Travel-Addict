@@ -25,7 +25,7 @@ interface User {
     email: string;
     password: string;
 }
- 
+
 class AuthService {
     async create(newUser: User): Promise<void> {
         const salt = await bcrypt.genSalt();
@@ -62,6 +62,11 @@ class AuthService {
 
     public async getUserEmailForSession(sessionId: string): Promise<string | null> {
         return getAsync(sessionId);
+    }
+
+    public async getUserIdInSession(sessionId: string): Promise<string | null> {
+        const userEmail = await this.getUserEmailForSession(sessionId)
+        return await knex('users').where({ email: userEmail }).first()
     }
 }
 
