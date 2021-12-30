@@ -150,7 +150,7 @@ app.get("/reisen", checkLogin, async (req, res) => {
 
 app.get("/loggedInUserEmail", checkLogin, async (req, res) => {
     console.log(req.userEmail)
-    res.send(req.userEmail)
+    res.send({ 'email': req.userEmail })
 });
 
 app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
