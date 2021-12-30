@@ -32,18 +32,28 @@ const knex_1 = require("knex");
 const knexfile_1 = __importDefault(require("../knexfile"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
+const originURL = ['http://127.0.0.1:5500', 'http://127.0.0.1:5555', 'https://travel-addict.netlify.app',
+    'https://travel-addict.netlify.app/html/reise.html', 'http://127.0.0.1:5500/html/reise.html',
+    'http://127.0.0.1:5555/html/reise.html'];
 const knex = (0, knex_1.knex)(knexfile_1.default);
 const authService = new AuthService_1.default();
 const reiseService = new ReiseService_1.default(knex);
-app.options("/login", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+app.use((0, cookie_parser_1.default)());
+app.options("/*", function (req, res, next) {
+    const allowedOrigins = originURL;
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    // res.header('Access-Control-Allow-Origin', originURL);
+    // res.header('Access-Control-Allow-Origin', 'https://travel-addict.netlify.app');
+    // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
     res.sendStatus(200);
 });
 app.use(express_1.default.json());
-app.use((0, cookie_parser_1.default)());
 // install middleware (open api validator)
 app.use(OpenApiValidator.middleware({
     apiSpec: "./openapi.yaml",
@@ -51,10 +61,19 @@ app.use(OpenApiValidator.middleware({
     validateResponses: false,
 }));
 app.use((0, cors_1.default)({
-    origin: 'http://127.0.0.1:5500',
     credentials: true
 }));
-// app.options('/login', cors()) // enable pre-flight request for login post request
+app.use((req, res, next) => {
+    const allowedOrigins = originURL;
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    return next();
+});
 const checkLogin = async (req, res, next) => {
     const session = req.cookies.session;
     if (!session) {
@@ -67,6 +86,14 @@ const checkLogin = async (req, res, next) => {
         return res.json({ message: "You need to be logged in to see this page." });
     }
     req.userEmail = email;
+    /*
+    userId = await authService.getUserIdInSession(session);
+    if (!userId) {
+        res.status(401);
+        return res.json({ message: "You need to be logged in to see this page." });
+    }
+    req.userId = userId;
+    */
     next();
 };
 app.use((err, req, res, next) => {
@@ -90,7 +117,7 @@ app.post("/login", async (req, res) => {
     res.cookie("session", sessionId, {
         maxAge: 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : undefined,
         secure: process.env.NODE_ENV === "production",
     });
     res.json({ status: "ok" });
@@ -105,14 +132,19 @@ app.post("/reisen", checkLogin, (req, res) => {
 app.get("/reisen", async (req, res) => {
     reiseService.getAll().then((total) => res.send(total));
 });
+app.get("/reisen/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    reiseService.getReisenByUserId(userId).then((filteredReisen) => res.send(filteredReisen));
+});
 app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     reiseService.delete(id).then(() => {
         res.status(204);
+        res.json({ message: "reise deleted" });
         res.send();
     });
 });
-app.patch("/reisen/:reiseId", checkLogin, (req, res) => {
+app.put("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     const payload = req.body;
     reiseService.update(id, payload).then((newEntry) => {

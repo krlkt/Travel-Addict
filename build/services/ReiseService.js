@@ -17,6 +17,7 @@ class ReiseService {
         await this.knex("reisen").insert(newReise);
         return newReise;
     }
+    // TODO make sure only reisen belonged to user can delete their reisen
     async delete(uuid) {
         await this.knex("reisen").where({ id: uuid }).delete();
     }
@@ -25,6 +26,9 @@ class ReiseService {
     }
     async getAll() {
         return this.knex("reisen");
+    }
+    async getReisenByUserId(userId) {
+        return this.knex("reisen").where({ user_id: userId });
     }
 }
 exports.default = ReiseService;

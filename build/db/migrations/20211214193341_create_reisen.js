@@ -9,7 +9,7 @@ async function up(knex) {
         table.date('startDatum').notNullable();
         table.date('endDatum').notNullable();
         table.string('land').notNullable();
-        table.uuid('user_id').references('id').inTable('users').notNullable();
+        table.uuid('user_id').references('id').inTable('users');
         table.timestamp('created_at').defaultTo(knex.fn.now());
     });
 }

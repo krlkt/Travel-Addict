@@ -139,16 +139,15 @@ app.get("/reisen", async (req, res) => {
     reiseService.getAll().then((total) => res.send(total));
 });
 
-app.get("/reisen/:userId", async (req, res) => {
-    const userId = req.params.userId
-    reiseService.getReisenByUserId(userId).then((filteredReisen) => res.send(filteredReisen));
-});
+// app.get("/reisen/:userId", async (req, res) => {
+//     const userId = req.params.userId
+//     reiseService.getReisenByUserId(userId).then((filteredReisen) => res.send(filteredReisen));
+// });
 
 app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;
     reiseService.delete(id).then(() => {
         res.status(204);
-        res.json({ message: "reise deleted" });
         res.send();
     });
 });
