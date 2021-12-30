@@ -172,18 +172,16 @@ const postReise = async (reiseObject) => {
 const deleteReise = async (reiseId) => {
     const deleteReiseResponse = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
         method: 'DELETE',
-    }).then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        mode: "cors",
+        credentials: 'include',
+    })
 }
 
 const putReise = async (reiseId, reiseObject) => {
     const putReise = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
         method: 'PUT',
+        mode: "cors",
+        credentials: 'include',
         body: JSON.stringify({ reiseObject })
     }).then(response => response.json())
         .then(data => {
@@ -206,94 +204,96 @@ btn.addEventListener('click', async (e) => {
             method: 'GET',
             mode: "cors",
             credentials: 'include',
-        }).then(email => {
-            console.log(email)
-            reiseObject =
-            {
-                name: document.getElementById('name').value,
-                startDatum: document.getElementById('startDatum').value,
-                endDatum: document.getElementById('endDatum').value,
-                land: document.getElementById('land').value[0] + document.getElementById('land').value[1],
-                user_email: loggedInUserEmail
-            }
-            //input.push(reise);
-            document.forms[0].reset();
-            //localStorage.setItem(reise.name, JSON.stringify(input));
-            //localStorage.setItem("Reisen", JSON.stringify(input));
-            postReise(reiseObject);
+        }).then(response => response.json())
+            .then(data => {
+                console.log('Success:', data.email);
+                //console.log(data.id);
+                reiseObject =
+                {
+                    name: document.getElementById('name').value,
+                    startDatum: document.getElementById('startDatum').value,
+                    endDatum: document.getElementById('endDatum').value,
+                    land: document.getElementById('land').value[0] + document.getElementById('land').value[1],
+                    user_email: data.email
+                }
+                //input.push(reise);
+                document.forms[0].reset();
+                //localStorage.setItem(reise.name, JSON.stringify(input));
+                //localStorage.setItem("Reisen", JSON.stringify(input));
+                postReise(reiseObject);
 
-            //input.pop();
+                //input.pop();
 
-            //li
-            const li = document.createElement('li');
-            li.id = "card";
-            //input Elements, ids, types
-            var inputName = document.createElement('input');
-            inputName.type = "text";
-            inputName.id = "inputName";
-            var inputStartDatum = document.createElement('input');
-            inputStartDatum.type = "date";
-            inputStartDatum.id = "inputStartDatum";
-            var inputEndDatum = document.createElement('input');
-            inputEndDatum.type = "date";
-            inputEndDatum.id = "inputEndDatum";
-            var inputLand = document.createElement('input');
-            inputLand.type = "text";
-            inputLand.id = "inputLand";
-            inputLand.setAttribute('list', 'dList');
-            //inputLand.maxLength = "2";
+                //li
+                const li = document.createElement('li');
+                li.id = "card";
+                //input Elements, ids, types
+                var inputName = document.createElement('input');
+                inputName.type = "text";
+                inputName.id = "inputName";
+                var inputStartDatum = document.createElement('input');
+                inputStartDatum.type = "date";
+                inputStartDatum.id = "inputStartDatum";
+                var inputEndDatum = document.createElement('input');
+                inputEndDatum.type = "date";
+                inputEndDatum.id = "inputEndDatum";
+                var inputLand = document.createElement('input');
+                inputLand.type = "text";
+                inputLand.id = "inputLand";
+                inputLand.setAttribute('list', 'dList');
+                //inputLand.maxLength = "2";
 
-            //appending children
-            li.innerHTML = "Name: " + "\n";
-            li.name = reiseObject.name;
-            list.appendChild(li);
+                //appending children
+                li.innerHTML = "Name: " + "\n";
+                li.name = reiseObject.name;
+                list.appendChild(li);
 
-            li.appendChild(inputName);
-            inputName.defaultValue = reiseObject.name;
-            li.innerHTML = li.innerHTML + "Startdatum: " + "\n";
-            li.appendChild(inputStartDatum);
-            inputStartDatum.defaultValue = reiseObject.startDatum;
-            li.innerHTML = li.innerHTML + "Enddatum: " + "\n";
-            li.appendChild(inputEndDatum);
-            inputEndDatum.defaultValue = reiseObject.endDatum;
-            li.innerHTML = li.innerHTML + "Land: " + "\n";
-            li.appendChild(inputLand);
-            inputLand.defaultValue = reiseObject.land[0] + reiseObject.land[1]
+                li.appendChild(inputName);
+                inputName.defaultValue = reiseObject.name;
+                li.innerHTML = li.innerHTML + "Startdatum: " + "\n";
+                li.appendChild(inputStartDatum);
+                inputStartDatum.defaultValue = reiseObject.startDatum;
+                li.innerHTML = li.innerHTML + "Enddatum: " + "\n";
+                li.appendChild(inputEndDatum);
+                inputEndDatum.defaultValue = reiseObject.endDatum;
+                li.innerHTML = li.innerHTML + "Land: " + "\n";
+                li.appendChild(inputLand);
+                inputLand.defaultValue = reiseObject.land[0] + reiseObject.land[1]
 
-            //save button
-            const save = document.createElement('button')
-            save.id = "save";
-            save.innerHTML = "Save";
-            li.appendChild(save);
-            var savedInput = [];
-            //var savedReise = [];
+                //save button
+                const save = document.createElement('button')
+                save.id = "save";
+                save.innerHTML = "Save";
+                li.appendChild(save);
+                var savedInput = [];
+                //var savedReise = [];
 
-            const saves = document.querySelectorAll('#save');
-            for (let i = 0; i < saves.length; i++) {
-                saves[i].addEventListener('click', (s) => {
-                    const inputs = saves[i].parentElement.querySelectorAll('input');
-                    var lastReise = reiseObject;
-                    var savedReise =
-                    {
-                        name: inputs[0].value,
-                        startDatum: inputs[1].value,
-                        endDatum: inputs[2].value,
-                        land: inputs[3].value[0] + inputs[3].value[1]
-                    }
+                const saves = document.querySelectorAll('#save');
+                for (let i = 0; i < saves.length; i++) {
+                    saves[i].addEventListener('click', (s) => {
+                        const inputs = saves[i].parentElement.querySelectorAll('input');
+                        var lastReise = reiseObject;
+                        var savedReise =
+                        {
+                            name: inputs[0].value,
+                            startDatum: inputs[1].value,
+                            endDatum: inputs[2].value,
+                            land: inputs[3].value[0] + inputs[3].value[1]
+                        }
 
-                    //savedInput.push(savedReise);
-                    //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
-                    //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                    putReise(lastReise.id, savedReise);
-                    //localStorage.removeItem(lastName);
-                    deleteReise(lastReise.id);
-                    //lastName = savedReise.name;
-                    lastReise = savedReise;
-                    //savedInput.pop();
+                        //savedInput.push(savedReise);
+                        //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
+                        //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                        putReise(lastReise.id, savedReise);
+                        //localStorage.removeItem(lastName);
+                        deleteReise(lastReise.id);
+                        //lastName = savedReise.name;
+                        lastReise = savedReise;
+                        //savedInput.pop();
 
-                });
-            }
-        })
+                    });
+                }
+            })
     }
 
     //span
