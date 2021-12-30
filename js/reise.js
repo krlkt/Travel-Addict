@@ -293,8 +293,8 @@ btn.addEventListener('click', async (e) => {
 
                     });
                 }
-            })
-    }
+            
+    
 
     //span
     const span = document.createElement('span');
@@ -320,4 +320,6 @@ btn.addEventListener('click', async (e) => {
             }
         })
     }
+})
+}
 });
