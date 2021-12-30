@@ -1,12 +1,15 @@
+import {idNamespace} from '../ts/server.ts';
+
 const btn = document.querySelector('.btn-list');
 const list = document.querySelector('.container ul');
 let input = [];
 var storedReisen = []
 const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
+const userId = new idNamespace.userId();
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const getReisen = await fetch(`${BASE_URL}/reisen`, {
+    const getReisen = await fetch(`${BASE_URL}/reisen/${userId}`, {
         method: 'GET'
     }).then(response => response.json())
         .then(reisenList => {
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     //var item = JSON.parse(localStorage.getItem(key));
                     //var item = JSON.parse(storedReisen[i])
                     var item = storedReisen[i];
-                    //console.log(document.cookie);
+                    //console.log(userId);
                     
                 }
                 catch (e) {
@@ -50,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (item.length != 0) {
                     
                     //if storedReisen[i].user_id == current user id, then display cards
-                    //if(item.user_id == document.cookie)
+                    //if(item.user_id == await authService.getUserIdInSession(session))
                     {
 
                     li.innerHTML = "Name: " + "\n";

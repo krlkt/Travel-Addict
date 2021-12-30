@@ -80,9 +80,15 @@ const checkLogin = async (
         res.status(401);
         return res.json({ message: "You need to be logged in to see this page." });
     }
-    
     req.userEmail = email;
-
+    /*
+    userId = await authService.getUserIdInSession(session);
+    if (!userId) {
+        res.status(401);
+        return res.json({ message: "You need to be logged in to see this page." });
+    }
+    req.userId = userId;
+    */
     next();
 };
 
