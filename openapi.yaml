@@ -58,6 +58,19 @@ paths:
         "204":
           description: successful operation
 
+  /loggedInUserEmail:
+    get:
+      tags:
+        - loggedInUserEmail
+      summary: Get email from current logged in user
+      responses:
+        "200":
+          description: email from logged in user
+          content:
+            application/json:
+              schema:
+                type: string
+  
   /login:
     post:
       tags:

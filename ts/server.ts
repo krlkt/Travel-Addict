@@ -129,20 +129,30 @@ app.post("/login", async (req, res) => {
 
 app.post("/reisen", checkLogin, (req, res) => {
     const payload = req.body;
+    console.log(req.userEmail)
     reiseService.add(payload).then((newEntry) => {
         res.status(201);
         res.send(newEntry);
     });
 });
 
-app.get("/reisen", async (req, res) => {
-    reiseService.getAll().then((total) => res.send(total));
+app.get("/reisen", checkLogin, async (req, res) => {
+    var filteredReisen = []
+    reiseService.getAll().then((total) => {
+        total.forEach(element => {
+            if (element.user_email == req.userEmail) {
+                filteredReisen.push(element)
+            }
+        });
+        res.send(filteredReisen)
+        console.log(req.userEmail)
+    });
 });
 
-// app.get("/reisen/:userId", async (req, res) => {
-//     const userId = req.params.userId
-//     reiseService.getReisenByUserId(userId).then((filteredReisen) => res.send(filteredReisen));
-// });
+app.get("/loggedInUserEmail", checkLogin, async (req, res) => {
+    console.log(req.userEmail)
+    res.send(req.userEmail)
+});
 
 app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
     const id = req.params.reiseId;

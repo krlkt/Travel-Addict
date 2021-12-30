@@ -38,7 +38,7 @@ form.addEventListener('submit', (event) => {
                 document.getElementById('invalidLogin').style.display = "none";
                 //getExpenses().then(displayExpenses);
                 window.location.href = '/html/home.html';
-                
+
             } else {
                 // loginError.classList.remove('hidden')
                 console.log('unsuccessful login')
@@ -115,5 +115,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         createAccountForm.classList.remove("form-hidden");
     });
 })
-
-export { BASE_URL };

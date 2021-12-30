@@ -6,6 +6,7 @@ type Reise = {
   startDatum: Date;
   endDatum: Date;
   land: string;
+  user_email: string;
 };
 
 type SavedReise = Reise & {
@@ -34,9 +35,8 @@ class ReiseService {
     await this.knex("reisen").where({ id: uuid }).delete();
   }
 
-  async update(uuid: string, newReise: Reise): Promise<void>
-  {
-    await this.knex("reisen").where({id: uuid}).update(newReise);
+  async update(uuid: string, newReise: Reise): Promise<void> {
+    await this.knex("reisen").where({ id: uuid }).update(newReise);
   }
 
   async getAll(): Promise<Reise[]> {
@@ -44,7 +44,7 @@ class ReiseService {
   }
 
   async getReisenByUserId(userId: string): Promise<Reise[]> {
-    return this.knex("reisen").where({user_id: userId});
+    return this.knex("reisen").where({ user_id: userId });
   }
 }
 
