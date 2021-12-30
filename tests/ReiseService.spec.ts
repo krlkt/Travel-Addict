@@ -40,6 +40,7 @@ describe("ReiseService", () => {
                 startDatum: new Date(2021, 1, 1),
                 endDatum: new Date(2021, 1, 2),
                 land: "DE",
+                user_email: "admin@ta"
             });
 
             // Assert
