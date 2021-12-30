@@ -145,7 +145,6 @@ app.get("/reisen", checkLogin, async (req, res) => {
             }
         });
         res.send(filteredReisen)
-        console.log(req.userEmail)
     });
 });
 
