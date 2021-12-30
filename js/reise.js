@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 inputLand.type = "text";
                 inputLand.id = "inputLand";
                 inputLand.setAttribute('list', 'dList');
+                //var reiseId;
                 //inputLand.maxLength = "2";
             
                 li.id = "card";
@@ -112,11 +113,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             
                     for (let i = 0; i < remove.length; i++) {
                         remove[i].addEventListener('click', () => {
-                            console.log(remove[i].parentElement.reiseObject);
+                            
                             remove[i].parentElement.remove();
                             //localStorage.removeItem(remove[i].parentElement.name);
                             //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                            deleteReise(remove[i].parentElement.id);
+                            for(let j = 0; j < storedReisen.length; j++)
+                            {
+                                //console.log(storedReisen.length);
+                                //console.log(storedReisen[j].name);
+                                //console.log(remove[i].parentElement.name);
+                                if(storedReisen[j].name == remove[i].parentElement.name)
+                                {
+                                    console.log(storedReisen[j].id);
+                                    deleteReise(storedReisen[j].id);
+                                    break;
+                                }
+                            }
+                            
                         })
                     }
                 }
@@ -138,8 +151,7 @@ const postReise = async (reiseObject) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            reiseObject
+        body: JSON.stringify(reiseObject
             /*
             "name": "Will's Reise to Bali",
             "startDatum": "2018-04-19",
@@ -151,6 +163,7 @@ const postReise = async (reiseObject) => {
     }).then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            //console.log(data.id);
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -195,7 +208,7 @@ btn.addEventListener('click', (e) => {
             name: document.getElementById('name').value,
             startDatum: document.getElementById('startDatum').value,
             endDatum: document.getElementById('endDatum').value,
-            land: document.getElementById('land').value[0] + document.getElementById('land').value[1]
+            land: document.getElementById('land').value[0] + document.getElementById('land').value[1],
         }
         //input.push(reise);
         document.forms[0].reset();
