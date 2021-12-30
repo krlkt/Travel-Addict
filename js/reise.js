@@ -1,15 +1,12 @@
-import {idNamespace} from '../ts/server.ts';
-
 const btn = document.querySelector('.btn-list');
 const list = document.querySelector('.container ul');
 let input = [];
 var storedReisen = []
 const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
-const userId = new idNamespace.userId();
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const getReisen = await fetch(`${BASE_URL}/reisen/${userId}`, {
+    const getReisen = await fetch(`${BASE_URL}/reisen`, {
         method: 'GET'
     }).then(response => response.json())
         .then(reisenList => {
