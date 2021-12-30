@@ -10,7 +10,9 @@ const visitedCountries = [];
 
 const loadVisitedCountries = async () => {
   await fetch(`${BASE_URL}/reisen`, {
-    method: 'GET'
+    method: 'GET',
+    mode: "cors",
+    credentials: 'include',
   }).then(response => response.json())
     .then(reisenList => {
       console.log(reisenList[0].land)
