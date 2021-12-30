@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
             table.date('startDatum').notNullable();
             table.date('endDatum').notNullable();
             table.string('land').notNullable();
-            table.uuid('user_id').references('id').inTable('users');
+            table.string('user_email').references('email').inTable('users').notNullable();
             table.timestamp('created_at').defaultTo(knex.fn.now());
         })
 };
