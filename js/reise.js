@@ -112,6 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
                     for (let i = 0; i < remove.length; i++) {
                         remove[i].addEventListener('click', () => {
+                            console.log(remove[i].parentElement.reiseObject);
                             remove[i].parentElement.remove();
                             //localStorage.removeItem(remove[i].parentElement.name);
                             //localStorage.setItem("Reisen", JSON.stringify(savedInput));
@@ -157,7 +158,7 @@ const postReise = async (reiseObject) => {
 }
 
 const deleteReise = async (reiseId) => {
-    const deleteReise = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
+    const deleteReiseResponse = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
         method: 'DELETE',
     }).then(response => response.json())
         .then(data => {
@@ -206,6 +207,7 @@ btn.addEventListener('click', (e) => {
 
         //li
         const li = document.createElement('li');
+        li.id = "card";
         //input Elements, ids, types
         var inputName = document.createElement('input');
         inputName.type = "text";
@@ -223,7 +225,6 @@ btn.addEventListener('click', (e) => {
         //inputLand.maxLength = "2";
 
         //appending children
-        li.id = "card";
         li.innerHTML = "Name: " + "\n";
         li.name = reiseObject.name;
         list.appendChild(li);
