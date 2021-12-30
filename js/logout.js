@@ -3,5 +3,5 @@ document.getElementById("logout").onclick = function () { logout() };
 
 /* myFunction toggles between adding and removing the show class, which is used to hide and show the dropdown content */
 function logout() {
-    window.location.replace("https://travel-addict.netlify.app/index.html");
+    window.location.replace("/index.html");
 }
