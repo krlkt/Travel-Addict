@@ -182,8 +182,8 @@ const deleteReise = async (reiseId) => {
         });
 }
 
-const putReise = async (id, reiseObject) => {
-    const putReise = await fetch(`${BASE_URL}/reisen/${id}`, {
+const putReise = async (reiseId, reiseObject) => {
+    const putReise = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
         method: 'PUT',
         body: JSON.stringify({ reiseObject })
     }).then(response => response.json())
@@ -300,7 +300,18 @@ btn.addEventListener('click', (e) => {
                 remove[i].parentElement.remove();
                 //localStorage.removeItem(remove[i].parentElement.name);
                 //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                deleteReise(remove[i].parentElement.id);
+                for(let j = 0; j < storedReisen.length; j++)
+                            {
+                                //console.log(storedReisen.length);
+                                //console.log(storedReisen[j].name);
+                                //console.log(remove[i].parentElement.name);
+                                if(storedReisen[j].name == remove[i].parentElement.name)
+                                {
+                                    console.log(storedReisen[j].id);
+                                    deleteReise(storedReisen[j].id);
+                                    break;
+                                }
+                            }
             })
         }
     }
