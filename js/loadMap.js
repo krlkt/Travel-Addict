@@ -1,3 +1,5 @@
+const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
+
 const mymap = L.map('map').setView([20, 0], 2);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png	', {
@@ -5,28 +7,29 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png	', {
 }).addTo(mymap);
 
 const visitedCountries = [];
-Object.keys(localStorage).forEach(function(key)
-{
-  if(key == 'Reisen')
-  {
-    var item = JSON.parse(localStorage.getItem(key));
-    visitedCountries.push(item[0].land);
-  }
-});
 
-//visitedCountries = ['DE', 'US', 'RU', 'ID'];
+const loadVisitedCountries = async () => {
+  await fetch(`${BASE_URL}/reisen`, {
+    method: 'GET'
+  }).then(response => response.json())
+    .then(reisenList => {
+      console.log(reisenList[0].land)
+      reisenList.forEach(element => {
+        visitedCountries.push(element.land)
+      });
+    })
+}
 
 const loadData = async () => {
   const response = await fetch('https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_countries.geojson')
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
-
-
 const displayData = async () => {
+  await loadVisitedCountries();
   const data = await loadData();
+  console.log(visitedCountries)
   const filteredData = {
     ...data,
     features: data.features.filter(feature =>

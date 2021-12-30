@@ -115,3 +115,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         createAccountForm.classList.remove("form-hidden");
     });
 })
+
+export { BASE_URL };
