@@ -92,11 +92,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     land: inputs[3].value[0] + inputs[3].value[1]
                                 }
 
-                                //savedInput.push(savedReise);
-                                //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                                putReise(lastReise.id, savedReise);
+                                for (let j = 0; j < storedReisen.length; j++) {
+                                    //console.log(storedReisen.length);
+                                    //console.log(storedReisen[j].name);
+                                    //console.log(remove[i].parentElement.name);
+                                    if (storedReisen[j].name == saves[i].parentElement.name) {
+                                        console.log(storedReisen[j].name);
+                                        console.log(saves[i].parentElement.name);
+                                        putReise(storedReisen[j].id, savedReise);
+                                        break;
+                                    }
+                                }
+                                
                                 //localStorage.removeItem(lastName);
-                                deleteReise(lastReise.id);
+                                //deleteReise(lastReise.id);
                                 lastReise = savedReise;
                                 //lastName = savedReise.name;
 
@@ -207,7 +216,7 @@ btn.addEventListener('click', async (e) => {
         }).then(response => response.json())
             .then(data => {
                 console.log('Success:', data.email);
-                //console.log(data.id);
+
                 reiseObject =
                 {
                     name: document.getElementById('name').value,
@@ -284,9 +293,12 @@ btn.addEventListener('click', async (e) => {
                         //savedInput.push(savedReise);
                         //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
                         //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+                        //console.log(lastReise.id);
+                        //console.log(savedReise);
                         putReise(lastReise.id, savedReise);
                         //localStorage.removeItem(lastName);
-                        deleteReise(lastReise.id);
+                        //deleteReise(lastReise.id);
+                        
                         //lastName = savedReise.name;
                         lastReise = savedReise;
                         //savedInput.pop();

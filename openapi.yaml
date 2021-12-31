@@ -57,6 +57,22 @@ paths:
       responses:
         "204":
           description: successful operation
+  /reisen/{uuid}:
+    put:
+      tags:
+        - reise
+      summary: Replaces a reise with another by uuid
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: uuid of the entry to replace, new reise
+      responses:
+        "204":
+          description: successful operation
 
   /loggedInUserEmail:
     get:
