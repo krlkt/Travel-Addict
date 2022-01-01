@@ -109,7 +109,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 
                                 //localStorage.removeItem(lastName);
                                 //deleteReise(lastReise.id);
-                                lastReise = savedReise;
+                                
+                                //lastReise = savedReise;
+
                                 //lastName = savedReise.name;
 
                                 //savedInput.pop();
