@@ -76,13 +76,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         save.id = "save";
                         save.innerHTML = "Save";
                         li.appendChild(save);
-                        var savedInput = [];
 
                         const saves = document.querySelectorAll('#save');
                         for (let i = 0; i < saves.length; i++) {
                             saves[i].addEventListener('click', (s) => {
                                 const inputs = saves[i].parentElement.querySelectorAll('input');
                                 var lastReise = item.name;
+                                console.log(lastReise);
 
                                 var savedReise =
                                 {
@@ -96,9 +96,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     //console.log(storedReisen.length);
                                     //console.log(storedReisen[j].name);
                                     //console.log(remove[i].parentElement.name);
-                                    if (storedReisen[j].name == saves[i].parentElement.name) {
+                                    if (storedReisen[j].name == savedReise.name) {
                                         console.log(storedReisen[j].name);
-                                        console.log(saves[i].parentElement.name);
+                                        console.log(savedReise.name);
+                                        console.log(storedReisen[j].id);
+                                        console.log(savedReise);
+                                        
                                         putReise(storedReisen[j].id, savedReise);
                                         break;
                                     }
@@ -149,7 +152,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 })
 
-var reiseObject = {}
+//var reiseObject = {}
 
 const postReise = async (reiseObject) => {
     const postReiseResponse = await fetch(`${BASE_URL}/reisen`, {
@@ -171,7 +174,6 @@ const postReise = async (reiseObject) => {
     }).then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            //console.log(data.id);
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -191,6 +193,9 @@ const putReise = async (reiseId, reiseObject) => {
         method: 'PUT',
         mode: "cors",
         credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ reiseObject })
     }).then(response => response.json())
         .then(data => {
