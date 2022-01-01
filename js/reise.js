@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             saves[i].addEventListener('click', (s) => {
                                 const inputs = saves[i].parentElement.querySelectorAll('input');
                                 var lastReise = item.name;
-                                console.log(lastReise);
+                                console.log("lastReise: "+lastReise);
 
                                 var savedReise =
                                 {
