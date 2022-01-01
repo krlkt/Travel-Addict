@@ -154,10 +154,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 })
 
-var reisePostObject = {}
-var reisePutObject = {}
+var reiseObject = {}
 
-const postReise = async (reisePostObject) => {
+const postReise = async (reiseObject) => {
     const postReiseResponse = await fetch(`${BASE_URL}/reisen`, {
         method: 'POST',
         mode: "cors",
@@ -165,7 +164,7 @@ const postReise = async (reisePostObject) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(reisePostObject
+        body: JSON.stringify(reiseObject
             /*
             "name": "Will's Reise to Bali",
             "startDatum": "2018-04-19",
@@ -191,7 +190,7 @@ const deleteReise = async (reiseId) => {
     })
 }
 
-const putReise = async (reiseId, reisePutObject) => {
+const putReise = async (reiseId, reiseObject) => {
     const putReise = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
         method: 'PUT',
         mode: "cors",
@@ -199,7 +198,7 @@ const putReise = async (reiseId, reisePutObject) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ reisePutObject })
+        body: JSON.stringify({ reiseObject })
     }).then(response => response.json())
         .then(data => {
             console.log('Success:', data);
@@ -326,12 +325,7 @@ btn.addEventListener('click', async (e) => {
     for (let i = 0; i < remove.length; i++) {
         remove[i].addEventListener('click', () => {
             remove[i].parentElement.remove();
-            //localStorage.removeItem(remove[i].parentElement.name);
-            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
             for (let j = 0; j < storedReisen.length; j++) {
-                //console.log(storedReisen.length);
-                //console.log(storedReisen[j].name);
-                //console.log(remove[i].parentElement.name);
                 if (storedReisen[j].name == remove[i].parentElement.name) {
                     console.log(storedReisen[j].id);
                     deleteReise(storedReisen[j].id);
