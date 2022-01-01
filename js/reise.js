@@ -2,7 +2,6 @@ const btn = document.querySelector('.btn-list');
 const list = document.querySelector('.container ul');
 let input = [];
 var storedReisen = []
-var savedReise ={};
 const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
 // const BASE_URL = "http://localhost:8080";
 
@@ -16,14 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             console.log('Success:', reisenList);
             storedReisen = reisenList;
-
-            let loggedInUserEmail = await fetch(`${BASE_URL}/loggedInUserEmail`, {
-                method: 'GET',
-                mode: "cors",
-                credentials: 'include',
-            }).then(response => response.json())
-                .then(data => {
-                    console.log('Success:', data.email);
 
             for (let i = 0; i < storedReisen.length; i++) {
 
@@ -93,13 +84,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 var lastReise = item.name;
                                 console.log("lastReise: "+lastReise);
 
-                                savedReise =
+                                var savedReise =
                                 {
                                     name: inputs[0].value,
                                     startDatum: inputs[1].value,
                                     endDatum: inputs[2].value,
-                                    land: inputs[3].value[0] + inputs[3].value[1],
-                                    user_email: data.email
+                                    land: inputs[3].value[0] + inputs[3].value[1]
                                 }
 
                                 for (let j = 0; j < storedReisen.length; j++) {
@@ -155,19 +145,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     }
                 }
-                
             }
-        
         })
-        
         .catch((error) => {
             console.error('Error:', error);
         });
 })
 
-var reiseObject = {}
+var reisePostObject = {}
+var reisePutObject = {}
 
-const postReise = async (reiseObject) => {
+const postReise = async (reisePostObject) => {
     const postReiseResponse = await fetch(`${BASE_URL}/reisen`, {
         method: 'POST',
         mode: "cors",
@@ -175,7 +163,7 @@ const postReise = async (reiseObject) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(reiseObject
+        body: JSON.stringify(reisePostObject
             /*
             "name": "Will's Reise to Bali",
             "startDatum": "2018-04-19",
@@ -201,7 +189,7 @@ const deleteReise = async (reiseId) => {
     })
 }
 
-const putReise = async (reiseId, savedReise) => {
+const putReise = async (reiseId, reisePutObject) => {
     const putReise = await fetch(`${BASE_URL}/reisen/${reiseId}`, {
         method: 'PUT',
         mode: "cors",
@@ -209,7 +197,7 @@ const putReise = async (reiseId, savedReise) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ savedReise })
+        body: JSON.stringify({ reisePutObject })
     }).then(response => response.json())
         .then(data => {
             console.log('Success:', data);
@@ -300,7 +288,7 @@ btn.addEventListener('click', async (e) => {
                     saves[i].addEventListener('click', (s) => {
                         const inputs = saves[i].parentElement.querySelectorAll('input');
                         var lastReise = reiseObject;
-                        savedReise =
+                        var savedReise =
                         {
                             name: inputs[0].value,
                             startDatum: inputs[1].value,
@@ -352,5 +340,4 @@ btn.addEventListener('click', async (e) => {
     }
 })
 }
-})
 });
