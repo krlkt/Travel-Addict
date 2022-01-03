@@ -39,12 +39,13 @@ class ReiseService {
     await this.knex("reisen").where({ id: uuid }).update(newReise);
   }
 
-  async getAll(): Promise<Reise[]> {
+  async getAll(): Promise<SavedReise[]> {
     return this.knex("reisen");
   }
 
-  async getReisenByUserId(userId: string): Promise<Reise[]> {
-    return this.knex("reisen").where({ user_id: userId });
+  async getUserEmail(id: string): Promise<string> {
+    var reise = await this.knex("reisen").where({ id }).first()
+    return reise.user_email
   }
 }
 

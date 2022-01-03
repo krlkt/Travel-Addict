@@ -148,26 +148,50 @@ app.get("/reisen", checkLogin, async (req, res) => {
     });
 });
 
+app.get("/reisen/:reiseId", checkLogin, async (req, res) => {
+    var filteredReisen = []
+    reiseService.getAll().then((total) => {
+        total.forEach(element => {
+            if (element.id == req.params.reiseId) {
+                filteredReisen.push(element)
+            }
+        });
+        res.send(filteredReisen)
+    });
+});
+
 app.get("/loggedInUserEmail", checkLogin, async (req, res) => {
     console.log(req.userEmail)
     res.send({ 'email': req.userEmail })
 });
 
-app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
+app.delete("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
-    reiseService.delete(id).then(() => {
-        res.status(204);
-        res.send();
-    });
+    const userEmail = await reiseService.getUserEmail(id);
+    if (userEmail == req.userEmail) {
+        reiseService.delete(id).then(() => {
+            res.status(204);
+            res.send();
+        });
+    } else {
+        res.status(401);
+        return res.json({ message: "This reise may only be deleted by its creator" });
+    }
 });
 
-app.put("/reisen/:reiseId", checkLogin, (req, res) => {
+app.put("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
-    const payload = req.body;
-    reiseService.update(id, payload).then((newEntry) => {
-        res.status(200);
-        res.send(newEntry);
-    });
+    const userEmail = await reiseService.getUserEmail(id);
+    if (userEmail == req.userEmail) {
+        const payload = req.body;
+        reiseService.update(id, payload).then((newEntry) => {
+            res.status(200);
+            res.send(newEntry);
+        });
+    } else {
+        res.status(401);
+        return res.json({ message: "This reise may only be deleted by its creator" });
+    }
 });
 
 app.listen(port, () => {

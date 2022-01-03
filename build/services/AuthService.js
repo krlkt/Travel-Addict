@@ -54,9 +54,5 @@ class AuthService {
     async getUserEmailForSession(sessionId) {
         return getAsync(sessionId);
     }
-    async getUserIdInSession(sessionId) {
-        const userEmail = await this.getUserEmailForSession(sessionId);
-        return await knex('users').where({ email: userEmail }).first();
-    }
 }
 exports.default = AuthService;
