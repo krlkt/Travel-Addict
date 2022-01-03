@@ -60,15 +60,6 @@ main{
     padding: 20px 40px;
 }
 
-.goToIndex {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    background-color: var(--gray);
-    padding: 10px;
-    border-radius: 10px;
-}
-
 a {
     color: whitesmoke;
     text-decoration: none;
