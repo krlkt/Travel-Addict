@@ -14,16 +14,22 @@ describe('The Reise Page', () => {
     })
 
     it('persists after adding a new reise', () => {
-        cy.fillReiseForm()
-        cy.get('button[type="submit"]').click()
-        cy.intercept({
-            method: 'POST',
-            url: 'https://travel-addict-backend-server.herokuapp.com/reisen',
-        }).as('dataPostReisen');
-        cy.wait('@dataPostReisen').its('response.statusCode').should('equal', 201)
-        cy.wait(1000)
-        cy.reload()
-        // should persist
-        cy.get('input[id="inputLand"]').should('have.value', 'ID')
+        cy.get('div[class="container"]').find('li').then(($el) => {
+            const itemCount = Cypress.$($el).length;
+            cy.log(itemCount)
+            cy.fillReiseForm()
+            cy.get('button[type="submit"]').click()
+            cy.intercept({
+                method: 'POST',
+                url: 'https://travel-addict-backend-server.herokuapp.com/reisen',
+            }).as('dataPostReisen');
+            cy.wait('@dataPostReisen').its('response.statusCode').should('equal', 201)
+            cy.reload()
+            // should persist after reload
+            cy.get('div[class="container"]').find('li').then(($el) => {
+                const itemCountAfterAdding = Cypress.$($el).length;
+                expect(itemCountAfterAdding).to.equal(itemCount + 1)
+            })
+        })
     })
 })

@@ -186,7 +186,6 @@ app.delete("/reisen/:reiseId", checkLogin, async (req, res) => {
 app.put("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
     const userEmail = await reiseService.getUserEmail(id);
-    console.log(userEmail)
     if (userEmail == '') {
         res.status(400);
         return res.json({ message: "There is no reise with id: " + id });
