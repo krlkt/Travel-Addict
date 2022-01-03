@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         save.id = "save";
                         save.innerHTML = "Save";
                         li.appendChild(save);
-                        var savedInput = [];
 
                         const saves = document.querySelectorAll('#save');
                         for (let i = 0; i < saves.length; i++) {
@@ -96,20 +95,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     //console.log(storedReisen.length);
                                     //console.log(storedReisen[j].name);
                                     //console.log(remove[i].parentElement.name);
-                                    if (storedReisen[j].name == saves[i].parentElement.name) {
+                                    if (storedReisen[j].name == savedReise.name) {
                                         console.log(storedReisen[j].name);
-                                        console.log(saves[i].parentElement.name);
+                                        console.log(savedReise.name);
+                                        console.log(storedReisen[j].id);
+                                        console.log(savedReise);
+                                        
                                         putReise(storedReisen[j].id, savedReise);
                                         break;
                                     }
                                 }
                                 
-                                //localStorage.removeItem(lastName);
-                                //deleteReise(lastReise.id);
                                 lastReise = savedReise;
-                                //lastName = savedReise.name;
-
-                                //savedInput.pop();
                             });
                         }
 
@@ -125,14 +122,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             remove[i].addEventListener('click', () => {
 
                                 remove[i].parentElement.remove();
-                                //localStorage.removeItem(remove[i].parentElement.name);
-                                //localStorage.setItem("Reisen", JSON.stringify(savedInput));
+
                                 for (let j = 0; j < storedReisen.length; j++) {
-                                    //console.log(storedReisen.length);
-                                    //console.log(storedReisen[j].name);
-                                    //console.log(remove[i].parentElement.name);
                                     if (storedReisen[j].name == remove[i].parentElement.name) {
-                                        console.log(storedReisen[j].id);
                                         deleteReise(storedReisen[j].id);
                                         break;
                                     }
@@ -159,19 +151,10 @@ const postReise = async (reiseObject) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(reiseObject
-            /*
-            "name": "Will's Reise to Bali",
-            "startDatum": "2018-04-19",
-            "endDatum": "2018-05-19",
-            "land": "DE",
-            "user_id": "24ce658d-9a12-4783-96ad-924464e68080"
-            */
-        )
+        body: JSON.stringify(reiseObject)
     }).then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            //console.log(data.id);
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -191,14 +174,11 @@ const putReise = async (reiseId, reiseObject) => {
         method: 'PUT',
         mode: "cors",
         credentials: 'include',
-        body: JSON.stringify({ reiseObject })
-    }).then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reiseObject)
+    })
 }
 
 
@@ -290,19 +270,22 @@ btn.addEventListener('click', async (e) => {
                             land: inputs[3].value[0] + inputs[3].value[1]
                         }
 
-                        //savedInput.push(savedReise);
-                        //localStorage.setItem(savedReise.name, JSON.stringify(savedInput));
-                        //localStorage.setItem("Reisen", JSON.stringify(savedInput));
-                        //console.log(lastReise.id);
-                        //console.log(savedReise);
-                        putReise(lastReise.id, savedReise);
-                        //localStorage.removeItem(lastName);
-                        //deleteReise(lastReise.id);
+                        for (let j = 0; j < storedReisen.length; j++) {
+                            //console.log(storedReisen.length);
+                            //console.log(storedReisen[j].name);
+                            //console.log(remove[i].parentElement.name);
+                            if (storedReisen[j].name == savedReise.name) {
+                                console.log(storedReisen[j].name);
+                                console.log(savedReise.name);
+                                console.log(storedReisen[j].id);
+                                console.log(savedReise);
+                                
+                                putReise(storedReisen[j].id, savedReise);
+                                break;
+                            }
+                        }
                         
-                        //lastName = savedReise.name;
                         lastReise = savedReise;
-                        //savedInput.pop();
-
                     });
                 }
             
@@ -318,12 +301,7 @@ btn.addEventListener('click', async (e) => {
     for (let i = 0; i < remove.length; i++) {
         remove[i].addEventListener('click', () => {
             remove[i].parentElement.remove();
-            //localStorage.removeItem(remove[i].parentElement.name);
-            //localStorage.setItem("Reisen", JSON.stringify(savedInput));
             for (let j = 0; j < storedReisen.length; j++) {
-                //console.log(storedReisen.length);
-                //console.log(storedReisen[j].name);
-                //console.log(remove[i].parentElement.name);
                 if (storedReisen[j].name == remove[i].parentElement.name) {
                     console.log(storedReisen[j].id);
                     deleteReise(storedReisen[j].id);
