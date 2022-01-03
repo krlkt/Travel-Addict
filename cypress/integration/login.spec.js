@@ -21,9 +21,6 @@ describe('The Login Page', () => {
         cy.get('#login').click()
         // should show the invalid login div
         cy.url().should('contain', '/home.html')
-        cy.get('a[data-cy="nav_reise"]').click()
-        cy.getCookies()
-            .should('have.length', 1)
     })
 
     it('redirects to login page after a logout', () => {

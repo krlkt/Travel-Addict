@@ -168,6 +168,10 @@ app.get("/loggedInUserEmail", checkLogin, async (req, res) => {
 app.delete("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
     const userEmail = await reiseService.getUserEmail(id);
+    if (userEmail == '') {
+        res.status(400);
+        return res.json({ message: "There is no reise with id: " + id });
+    }
     if (userEmail == req.userEmail) {
         reiseService.delete(id).then(() => {
             res.status(204);
@@ -182,6 +186,11 @@ app.delete("/reisen/:reiseId", checkLogin, async (req, res) => {
 app.put("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
     const userEmail = await reiseService.getUserEmail(id);
+    console.log(userEmail)
+    if (userEmail == '') {
+        res.status(400);
+        return res.json({ message: "There is no reise with id: " + id });
+    }
     if (userEmail == req.userEmail) {
         const payload = req.body;
         reiseService.update(id, payload).then((newEntry) => {

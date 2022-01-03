@@ -23,3 +23,11 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('fillReiseForm', () => {
+    const randomId = Cypress._.random(0, 1e6)
+    cy.get('#name').type('Reise nach Bali: ' + randomId)
+    cy.get('#startDatum').type('2021-11-24')
+    cy.get('#endDatum').type('2021-12-12')
+    cy.get('#land').type('ID')
+})

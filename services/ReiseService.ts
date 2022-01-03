@@ -45,7 +45,11 @@ class ReiseService {
 
   async getUserEmail(id: string): Promise<string> {
     var reise = await this.knex("reisen").where({ id }).first()
-    return reise.user_email
+    if (reise != null && reise != undefined) {
+      return reise.user_email
+    } else {
+      return ''
+    }
   }
 }
 
