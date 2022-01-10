@@ -25,7 +25,7 @@
     "test:api": "jest api-tests/",
     "postinstall": "tsc",
     "build": "tsc",
-    "cypress:open": "cypress open"
+    "cy:open": "cypress open"
   },
   "engines": {
     "node": "16.x"

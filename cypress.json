@@ -1,3 +1,4 @@
 {
-    "baseUrl": "https://travel-addict.netlify.app"
+    "baseUrl": "https://travel-addict.netlify.app",
+    "watchForFileChanges": false
 }
