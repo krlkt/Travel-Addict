@@ -86,14 +86,6 @@ const checkLogin = async (req, res, next) => {
         return res.json({ message: "You need to be logged in to see this page." });
     }
     req.userEmail = email;
-    /*
-    userId = await authService.getUserIdInSession(session);
-    if (!userId) {
-        res.status(401);
-        return res.json({ message: "You need to be logged in to see this page." });
-    }
-    req.userId = userId;
-    */
     next();
 };
 app.use((err, req, res, next) => {
@@ -101,6 +93,24 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
         message: err.message,
         errors: err.errors,
+    });
+});
+app.post("/user", (req, res) => {
+    const payload = req.body;
+    authService.create(payload).then((Response) => {
+        if (Response) {
+            res.status(200);
+            res.send({ message: "successfuly created a user" });
+        }
+        else {
+            res.status(400);
+            res.send({ message: "user email already exist!" });
+        }
+    });
+});
+app.get("/user", async (req, res) => {
+    authService.getAll().then((total) => {
+        res.send(total);
     });
 });
 app.post("/login", async (req, res) => {
@@ -112,7 +122,7 @@ app.post("/login", async (req, res) => {
     const sessionId = await authService.login(payload.email, payload.password);
     if (!sessionId) {
         res.status(401);
-        return res.json({ message: "Bad email or password" });
+        return res.json({ message: "Email not confirmed or wrong credentials" });
     }
     res.cookie("session", sessionId, {
         maxAge: 60 * 60 * 1000,
@@ -141,24 +151,57 @@ app.get("/reisen", checkLogin, async (req, res) => {
         res.send(filteredReisen);
     });
 });
+app.get("/reisen/:reiseId", checkLogin, async (req, res) => {
+    var filteredReisen = [];
+    reiseService.getAll().then((total) => {
+        total.forEach(element => {
+            if (element.id == req.params.reiseId) {
+                filteredReisen.push(element);
+            }
+        });
+        res.send(filteredReisen);
+    });
+});
 app.get("/loggedInUserEmail", checkLogin, async (req, res) => {
     console.log(req.userEmail);
     res.send({ 'email': req.userEmail });
 });
-app.delete("/reisen/:reiseId", checkLogin, (req, res) => {
+app.delete("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
-    reiseService.delete(id).then(() => {
-        res.status(204);
-        res.send();
-    });
+    const userEmail = await reiseService.getUserEmail(id);
+    if (userEmail == '') {
+        res.status(400);
+        return res.json({ message: "There is no reise with id: " + id });
+    }
+    if (userEmail == req.userEmail) {
+        reiseService.delete(id).then(() => {
+            res.status(204);
+            res.send();
+        });
+    }
+    else {
+        res.status(401);
+        return res.json({ message: "This reise may only be deleted by its creator" });
+    }
 });
-app.put("/reisen/:reiseId", checkLogin, (req, res) => {
+app.put("/reisen/:reiseId", checkLogin, async (req, res) => {
     const id = req.params.reiseId;
-    const payload = req.body;
-    reiseService.update(id, payload).then((newEntry) => {
-        res.status(200);
-        res.send(newEntry);
-    });
+    const userEmail = await reiseService.getUserEmail(id);
+    if (userEmail == '') {
+        res.status(400);
+        return res.json({ message: "There is no reise with id: " + id });
+    }
+    if (userEmail == req.userEmail) {
+        const payload = req.body;
+        reiseService.update(id, payload).then((newEntry) => {
+            res.status(200);
+            res.send(newEntry);
+        });
+    }
+    else {
+        res.status(401);
+        return res.json({ message: "This reise may only be deleted by its creator" });
+    }
 });
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

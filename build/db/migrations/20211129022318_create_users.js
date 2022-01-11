@@ -8,6 +8,8 @@ async function up(knex) {
         table.string('email').unique().notNullable();
         table.string('password').notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.boolean('confirmed').notNullable();
+        table.string('confirmationCode').unique();
     });
 }
 exports.up = up;

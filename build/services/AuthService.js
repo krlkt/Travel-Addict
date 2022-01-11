@@ -9,6 +9,9 @@ const knex_1 = __importDefault(require("knex"));
 const redis_1 = require("redis");
 const crypto_1 = __importDefault(require("crypto"));
 const util_1 = require("util");
+// jwt variables
+const sign = require('jwt-encode');
+const secret = 'secret';
 const client = (0, redis_1.createClient)({
     url: process.env.REDIS_URL,
 });
@@ -23,20 +26,32 @@ const getAsync = (0, util_1.promisify)(client.get).bind(client);
 const setExAsync = (0, util_1.promisify)(client.setex).bind(client);
 class AuthService {
     async create(newUser) {
-        const salt = await bcrypt_1.default.genSalt();
-        const passwordHash = await bcrypt_1.default.hash(newUser.password, salt);
-        await knex("users").insert({
-            id: crypto_1.default.randomUUID(),
-            ...newUser,
-            password: passwordHash
-        });
+        const email = newUser.email;
+        // first check whether the user already exist
+        const newUser_email = await knex("users").where({ email }).first();
+        // if new user email does not already exist, create the user
+        if (!newUser_email) {
+            const jwt = sign({ email: newUser.email }, secret);
+            const salt = await bcrypt_1.default.genSalt();
+            const passwordHash = await bcrypt_1.default.hash(newUser.password, salt);
+            await knex("users").insert({
+                id: crypto_1.default.randomUUID(),
+                ...newUser,
+                password: passwordHash,
+                confirmed: false,
+                confirmationCode: jwt
+            });
+            return true;
+        }
+        return false;
     }
     async delete(email) {
         await knex("users").where({ email }).delete();
     }
     async checkPassword(email, password) {
         const dbUser = await knex("users").where({ email }).first();
-        if (!dbUser) {
+        if (!dbUser || !dbUser.confirmed) {
+            console.log('email not found or email is not confirmed');
             return false;
         }
         return bcrypt_1.default.compare(password, dbUser.password);
@@ -53,6 +68,9 @@ class AuthService {
     }
     async getUserEmailForSession(sessionId) {
         return getAsync(sessionId);
+    }
+    async getAll() {
+        return knex("users");
     }
 }
 exports.default = AuthService;

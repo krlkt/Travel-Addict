@@ -14,6 +14,48 @@ tags:
     description: Everything about travel addict
 
 paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: Get all user
+      responses:
+        "200":
+          description: get all user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      tags:
+        - user
+      summary: add a new user
+      responses:
+        "200":
+          description: Successfully added a user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /confirm/{confirmationCode}:
+    post:
+      tags:
+        - user
+      summary: confirm a user
+      parameters:
+        - in: path
+          name: confirmationCode
+          schema:
+            type: string
+          required: true
+          description: confirmationCode of the entry for the user
+      responses:
+        "200":
+          description: Successfully confirmed the user
+
   /reisen:
     get:
       tags:
@@ -96,6 +138,15 @@ paths:
 
 components:
   schemas:
+    User:
+      type: object
+      properties:
+        email: 
+          type: string
+          format: email
+        password:
+          type: string
+
     Reise:
       type: object
       properties:

@@ -7,6 +7,7 @@ import * as OpenApiValidator from "express-openapi-validator";
 import { HttpError } from "express-openapi-validator/dist/framework/types";
 import { knex as knexDriver } from "knex";
 import config from "../knexfile";
+import { CustomResponse } from "../services/AuthService"
 
 const app = express()
 const port = process.env.PORT || 8080;
@@ -81,14 +82,6 @@ const checkLogin = async (
         return res.json({ message: "You need to be logged in to see this page." });
     }
     req.userEmail = email;
-    /*
-    userId = await authService.getUserIdInSession(session);
-    if (!userId) {
-        res.status(401);
-        return res.json({ message: "You need to be logged in to see this page." });
-    }
-    req.userId = userId;
-    */
     next();
 };
 
@@ -107,6 +100,44 @@ app.use(
     }
 );
 
+app.post("/user", (req, res) => {
+    const payload = req.body;
+    authService.create(payload).then((Response) => {
+        if (Response) {
+            res.status(200);
+            res.send({ message: "successfuly created a user" });
+        } else {
+            res.status(400);
+            res.send({ message: "user email already exist!" });
+        }
+    });
+});
+
+app.get("/user", async (req, res) => {
+    authService.getAll().then((total) => {
+        res.send(total)
+    });
+});
+
+app.post("/confirm/:confirmationCode", async (req, res) => {
+    const confirmationCode: string = req.params.confirmationCode
+    authService.confirmAccount(confirmationCode).then((response) => {
+        if (response == CustomResponse.successful) {
+            res.status(200)
+            res.send({ message: "Email confirmed!" })
+        } else if (response == CustomResponse.alreadyConfirmed) {
+            res.status(400)
+            res.send({ message: "Email already confirmed!" })
+        } else if (response == CustomResponse.userNotFound) {
+            res.status(400)
+            res.send({ message: "User with that confirmation code was not found!" })
+        } else {
+            res.status(400)
+            res.send({ message: "Error occured while trying to confirm email" })
+        }
+    });
+});
+
 app.post("/login", async (req, res) => {
     const payload = req.body;
     if (!payload.email || !payload.password) {
@@ -116,7 +147,7 @@ app.post("/login", async (req, res) => {
     const sessionId = await authService.login(payload.email, payload.password);
     if (!sessionId) {
         res.status(401);
-        return res.json({ message: "Bad email or password" });
+        return res.json({ message: "Email not confirmed or wrong credentials" });
     }
     res.cookie("session", sessionId, {
         maxAge: 60 * 60 * 1000,

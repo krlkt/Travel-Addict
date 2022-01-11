@@ -27,8 +27,14 @@ class ReiseService {
     async getAll() {
         return this.knex("reisen");
     }
-    async getReisenByUserId(userId) {
-        return this.knex("reisen").where({ user_id: userId });
+    async getUserEmail(id) {
+        var reise = await this.knex("reisen").where({ id }).first();
+        if (reise != null && reise != undefined) {
+            return reise.user_email;
+        }
+        else {
+            return '';
+        }
     }
 }
 exports.default = ReiseService;

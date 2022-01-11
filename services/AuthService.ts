@@ -5,12 +5,19 @@ import Knex from "knex";
 import { createClient } from "redis";
 import crypto from "crypto";
 import { promisify } from "util";
+import { sendConfirmationEmail } from "../nodemailer.config"
+
+// jwt variables
+const sign = require('jwt-encode');
+const secret = 'secret';
 
 const client = createClient({
     url: process.env.REDIS_URL,
 });
 client.on("error", (err) => console.log("Redis Client Error", err));
 client.on("connect", () => console.log("Successfully connected to redis"));
+
+
 
 const knex = Knex(config);
 
@@ -24,17 +31,37 @@ const setExAsync = promisify(client.setex).bind(client);
 interface User {
     email: string;
     password: string;
+    confirmed: boolean;
+    confirmationCode: string;
 }
 
+export enum CustomResponse {
+    successful,
+    failed,
+    alreadyConfirmed,
+    userNotFound
+}
 class AuthService {
-    async create(newUser: User): Promise<void> {
-        const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(newUser.password, salt);
-        await knex("users").insert({
-            id: crypto.randomUUID(),
-            ...newUser,
-            password: passwordHash
-        });
+    async create(newUser: User): Promise<Boolean> {
+        const email = newUser.email
+        // first check whether the user already exist
+        const newUser_email = await knex<User>("users").where({ email }).first();
+        // if new user email does not already exist, create the user
+        if (!newUser_email) {
+            const jwt = sign({ email: newUser.email }, secret);
+            const salt = await bcrypt.genSalt();
+            const passwordHash = await bcrypt.hash(newUser.password, salt);
+            await knex("users").insert({
+                id: crypto.randomUUID(),
+                ...newUser,
+                password: passwordHash,
+                confirmed: false,
+                confirmationCode: jwt
+            });
+            sendConfirmationEmail(email, jwt)
+            return true;
+        }
+        return false;
     }
 
     async delete(email: string): Promise<void> {
@@ -43,9 +70,11 @@ class AuthService {
 
     async checkPassword(email: string, password: string): Promise<boolean> {
         const dbUser = await knex<User>("users").where({ email }).first();
-        if (!dbUser) {
+        if (!dbUser || !dbUser.confirmed) {
+            console.log('email not found or email is not confirmed')
             return false;
         }
+
         return bcrypt.compare(password, dbUser.password);
     }
 
@@ -62,6 +91,28 @@ class AuthService {
 
     public async getUserEmailForSession(sessionId: string): Promise<string | null> {
         return getAsync(sessionId);
+    }
+
+    async confirmAccount(confirmationCode: string): Promise<CustomResponse> {
+        const user = await knex("users").where({ confirmationCode: confirmationCode }).first()
+        if (!user) {
+            return CustomResponse.userNotFound;
+        }
+        // if email already confirmed, return false
+        if (user["confirmed"] == true) {
+            return CustomResponse.alreadyConfirmed;
+        }
+        user["confirmed"] = true;
+        const updatedUser = await knex('users').where({ confirmationCode: confirmationCode }).update(user)
+        if (updatedUser) {
+            return CustomResponse.successful;
+        } else {
+            return CustomResponse.failed
+        }
+    }
+
+    async getAll(): Promise<User[]> {
+        return knex("users");
     }
 }
 

@@ -3739,6 +3739,13 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
+jwt-encode@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jwt-encode/-/jwt-encode-1.0.1.tgz#6602a0475f757c7d5d559a7e923f3d3d5ecd938c"
+  integrity sha512-QrGiNhynbAYyFdbC1GbjborzenSFs5Ga+2nE0uBokGXsH11xrgd1AX55HR7P+wGQyyZOn6LUO5iKlh74dlhBkA==
+  dependencies:
+    ts.cryptojs256 "^1.0.1"
+
 kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/kleur/-/kleur-3.0.3.tgz"
@@ -4054,6 +4061,11 @@ node-releases@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/node-releases/-/node-releases-2.0.1.tgz"
   integrity sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==
+
+nodemailer@^6.7.2:
+  version "6.7.2"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.7.2.tgz#44b2ad5f7ed71b7067f7a21c4fedabaec62b85e0"
+  integrity sha512-Dz7zVwlef4k5R71fdmxwR8Q39fiboGbu3xgswkzGwczUfjp873rVxt1O46+Fh0j1ORnAC6L9+heI8uUpO6DT7Q==
 
 nopt@^5.0.0:
   version "5.0.0"
@@ -5156,6 +5168,11 @@ ts-node@^9.0.0:
     make-error "^1.1.1"
     source-map-support "^0.5.17"
     yn "3.1.1"
+
+ts.cryptojs256@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ts.cryptojs256/-/ts.cryptojs256-1.0.1.tgz#56a3d3a3bc022ad358b3e62cd8dae3224d9384f1"
+  integrity sha1-VqPTo7wCKtNYs+Ys2NrjIk2ThPE=
 
 tsconfig@^7.0.0:
   version "7.0.0"
