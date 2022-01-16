@@ -15,7 +15,6 @@ const loadVisitedCountries = async () => {
     credentials: 'include',
   }).then(response => response.json())
     .then(reisenList => {
-      console.log(reisenList[0].land)
       reisenList.forEach(element => {
         visitedCountries.push(element.land)
       });
