@@ -120,12 +120,10 @@ app.get("/confirm/:confirmationCode", async (req, res) => {
         if (response == AuthService_2.CustomResponse.successful) {
             res.status(200);
             res.send({ message: "Email confirmed!" });
-            res.redirect('https://travel-addict.netlify.app/');
         }
         else if (response == AuthService_2.CustomResponse.alreadyConfirmed) {
             res.status(400);
             res.send({ message: "Email already confirmed!" });
-            res.redirect('https://travel-addict.netlify.app/');
         }
         else if (response == AuthService_2.CustomResponse.userNotFound) {
             res.status(400);
