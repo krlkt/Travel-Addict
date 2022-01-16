@@ -3,12 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CustomResponse = void 0;
 const knexfile_1 = __importDefault(require("../knexfile"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const knex_1 = __importDefault(require("knex"));
 const redis_1 = require("redis");
 const crypto_1 = __importDefault(require("crypto"));
 const util_1 = require("util");
+const nodemailer_config_1 = require("../nodemailer.config");
 // jwt variables
 const sign = require('jwt-encode');
 const secret = 'secret';
@@ -24,6 +26,13 @@ const knex = (0, knex_1.default)(knexfile_1.default);
 // does return Promises and can hence be `await`ed.
 const getAsync = (0, util_1.promisify)(client.get).bind(client);
 const setExAsync = (0, util_1.promisify)(client.setex).bind(client);
+var CustomResponse;
+(function (CustomResponse) {
+    CustomResponse[CustomResponse["successful"] = 0] = "successful";
+    CustomResponse[CustomResponse["failed"] = 1] = "failed";
+    CustomResponse[CustomResponse["alreadyConfirmed"] = 2] = "alreadyConfirmed";
+    CustomResponse[CustomResponse["userNotFound"] = 3] = "userNotFound";
+})(CustomResponse = exports.CustomResponse || (exports.CustomResponse = {}));
 class AuthService {
     async create(newUser) {
         const email = newUser.email;
@@ -41,6 +50,7 @@ class AuthService {
                 confirmed: false,
                 confirmationCode: jwt
             });
+            (0, nodemailer_config_1.sendConfirmationEmail)(email, jwt);
             return true;
         }
         return false;
@@ -68,6 +78,24 @@ class AuthService {
     }
     async getUserEmailForSession(sessionId) {
         return getAsync(sessionId);
+    }
+    async confirmAccount(confirmationCode) {
+        const user = await knex("users").where({ confirmationCode: confirmationCode }).first();
+        if (!user) {
+            return CustomResponse.userNotFound;
+        }
+        // if email already confirmed, return false
+        if (user["confirmed"] == true) {
+            return CustomResponse.alreadyConfirmed;
+        }
+        user["confirmed"] = true;
+        const updatedUser = await knex('users').where({ confirmationCode: confirmationCode }).update(user);
+        if (updatedUser) {
+            return CustomResponse.successful;
+        }
+        else {
+            return CustomResponse.failed;
+        }
     }
     async getAll() {
         return knex("users");

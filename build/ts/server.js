@@ -30,6 +30,7 @@ const ReiseService_1 = __importDefault(require("../services/ReiseService"));
 const OpenApiValidator = __importStar(require("express-openapi-validator"));
 const knex_1 = require("knex");
 const knexfile_1 = __importDefault(require("../knexfile"));
+const AuthService_2 = require("../services/AuthService");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 8080;
 const originURL = ['http://127.0.0.1:5500', 'http://127.0.0.1:5555', 'https://travel-addict.netlify.app',
@@ -111,6 +112,29 @@ app.post("/user", (req, res) => {
 app.get("/user", async (req, res) => {
     authService.getAll().then((total) => {
         res.send(total);
+    });
+});
+app.get("/confirm/:confirmationCode", async (req, res) => {
+    const confirmationCode = req.params.confirmationCode;
+    authService.confirmAccount(confirmationCode).then((response) => {
+        if (response == AuthService_2.CustomResponse.successful) {
+            res.status(200);
+            res.send({ message: "Email confirmed!" });
+            res.redirect('https://travel-addict.netlify.app/');
+        }
+        else if (response == AuthService_2.CustomResponse.alreadyConfirmed) {
+            res.status(400);
+            res.send({ message: "Email already confirmed!" });
+            res.redirect('https://travel-addict.netlify.app/');
+        }
+        else if (response == AuthService_2.CustomResponse.userNotFound) {
+            res.status(400);
+            res.send({ message: "User with that confirmation code was not found!" });
+        }
+        else {
+            res.status(400);
+            res.send({ message: "Error occured while trying to confirm email" });
+        }
     });
 });
 app.post("/login", async (req, res) => {
