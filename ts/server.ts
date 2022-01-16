@@ -119,15 +119,17 @@ app.get("/user", async (req, res) => {
     });
 });
 
-app.post("/confirm/:confirmationCode", async (req, res) => {
+app.get("/confirm/:confirmationCode", async (req, res) => {
     const confirmationCode: string = req.params.confirmationCode
     authService.confirmAccount(confirmationCode).then((response) => {
         if (response == CustomResponse.successful) {
             res.status(200)
             res.send({ message: "Email confirmed!" })
+            res.redirect('https://travel-addict.netlify.app/')
         } else if (response == CustomResponse.alreadyConfirmed) {
             res.status(400)
             res.send({ message: "Email already confirmed!" })
+            res.redirect('https://travel-addict.netlify.app/')
         } else if (response == CustomResponse.userNotFound) {
             res.status(400)
             res.send({ message: "User with that confirmation code was not found!" })

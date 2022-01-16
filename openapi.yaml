@@ -41,7 +41,7 @@ paths:
                 $ref: "#/components/schemas/User"
 
   /confirm/{confirmationCode}:
-    post:
+    get:
       tags:
         - user
       summary: confirm a user

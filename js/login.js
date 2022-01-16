@@ -4,17 +4,16 @@ const signUpForm = document.querySelector('#createAccountForm');
 const email = document.querySelector('input[id="email"]');
 const password = document.querySelector('input[id="password"]');
 
-// const BASE_URL = "http://localhost:8080";
-const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
+const BASE_URL = "http://localhost:8080";
+// const BASE_URL = "https://travel-addict-backend-server.herokuapp.com";
 // const BASE_URL = process.env.NODE_ENV === "production" ? "https://travel-addict-backend-server.herokuapp.com" : "http://localhost:8080";
 
 function afterInput(e) {
     localStorage.setItem('email', e.target.value)
 }
 
+// fetch from heroku backend server methods
 const login = async (email, password) => {
-    console.log(email)
-    console.log(password)
     const loginUrl = `${BASE_URL}/login`;
 
     const response = await fetch(loginUrl, {
@@ -29,24 +28,20 @@ const login = async (email, password) => {
     return response.status === 200;
 }
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
+const signup = async (email, password) => {
+    const signupUrl = `${BASE_URL}/user`;
 
-    login(email.value, password.value)
-        .then(wasSuccessfulLogin => {
-            if (wasSuccessfulLogin) {
-                console.log('great! you are logged in!');
-                document.getElementById('invalidLogin').style.display = "none";
-                window.location.href = '/html/home.html';
-
-            } else {
-                console.log('unsuccessful login')
-                document.getElementById('invalidLogin').style.display = "block";
-                document.getElementById('invalidLogin').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Login fehlgeschlagen';
-                document.getElementById('signup_password').value = ''
-            }
-        })
-})
+    const response = await fetch(signupUrl, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    });
+    return response.status === 200;
+}
 
 // to save login email on local client
 document.addEventListener('DOMContentLoaded', async () => {
@@ -68,6 +63,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 })
 
+// login tab
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    login(email.value, password.value)
+        .then(wasSuccessfulLogin => {
+            if (wasSuccessfulLogin) {
+                document.getElementById('invalidLogin').style.display = "none";
+                window.location.href = '/html/home.html';
+            } else {
+                console.log('unsuccessful login')
+                document.getElementById('invalidLogin').style.display = "block";
+                document.getElementById('invalidLogin').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> Login fehlgeschlagen';
+                document.getElementById('signup_password').value = ''
+            }
+        })
+})
+
 // sign up tab
 signUpForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -82,6 +95,20 @@ signUpForm.addEventListener("submit", (event) => {
     }
     else {
         // register an account
-        console.log('creating acc')
+        signup(signup_email, signup_password)
+            .then(wasSuccessful => {
+                if (wasSuccessful) {
+                    document.getElementById('invalidSignup').style.display = "block";
+                    document.getElementById('invalidSignup').innerHTML = 'Registrierung erfolgreich, bitte Prüfen Sie Ihr Post Eingang ✌️'
+                    document.getElementById('invalidSignup').style.color = 'green'
+                    document.getElementById('invalidSignup').style.border = '1px solid green'
+                } else {
+                    document.getElementById('invalidSignup').style.display = "block";
+                    document.getElementById('invalidSignup').style.border = '1px solid red'
+                    document.getElementById('invalidSignup').style.color = 'red'
+                    document.getElementById('invalidSignup').innerHTML = '<img src="img/exclamation-mark-svgrepo-com.svg" style="width: 15px;"> User ist bereits registriert 😣';
+                    document.getElementById('signup_password').value = ''
+                }
+            })
     }
 })
