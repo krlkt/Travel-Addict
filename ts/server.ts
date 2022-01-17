@@ -113,11 +113,11 @@ app.post("/user", (req, res) => {
     });
 });
 
-app.get("/user", async (req, res) => {
-    authService.getAll().then((total) => {
-        res.send(total)
-    });
-});
+// app.get("/user", async (req, res) => {
+//     authService.getAll().then((total) => {
+//         res.send(total)
+//     });
+// });
 
 app.get("/confirm/:confirmationCode", async (req, res) => {
     const confirmationCode: string = req.params.confirmationCode
