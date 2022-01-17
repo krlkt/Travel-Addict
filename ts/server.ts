@@ -131,6 +131,9 @@ app.get("/confirm/:confirmationCode", async (req, res) => {
         } else if (response == CustomResponse.userNotFound) {
             res.status(400)
             res.send({ message: "User with that confirmation code was not found!" })
+        } else if (response == CustomResponse.confirmationCodeExpired) {
+            res.status(400)
+            res.send({ message: "The confirmation code has expired. Please register again ✌️" })
         } else {
             res.status(400)
             res.send({ message: "Error occured while trying to confirm email" })

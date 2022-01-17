@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
             table.timestamp('created_at').defaultTo(knex.fn.now());
             table.boolean('confirmed').notNullable();
             table.string('confirmationCode').unique()
+            table.timestamp('confirmationCodeValidUntil')
         })
 };
 

@@ -33,18 +33,24 @@ interface User {
     password: string;
     confirmed: boolean;
     confirmationCode: string;
+    confirmationCodeValidUntil: Date;
 }
 
 export enum CustomResponse {
     successful,
     failed,
     alreadyConfirmed,
-    userNotFound
+    userNotFound,
+    confirmationCodeExpired
 }
 class AuthService {
     async create(newUser: User): Promise<Boolean> {
-        const email = newUser.email
+        // set 'confirmation code valid until' to tomorrow
+        const today = new Date()
+        const tomorrow = new Date(today)
+        tomorrow.setDate(tomorrow.getDate() + 1)
         // first check whether the user already exist
+        const email = newUser.email
         const newUser_email = await knex<User>("users").where({ email }).first();
         // if new user email does not already exist, create the user
         if (!newUser_email) {
@@ -56,7 +62,8 @@ class AuthService {
                 ...newUser,
                 password: passwordHash,
                 confirmed: false,
-                confirmationCode: jwt
+                confirmationCode: jwt,
+                confirmationCodeValidUntil: tomorrow
             });
             sendConfirmationEmail(email, jwt)
             return true;
@@ -74,7 +81,6 @@ class AuthService {
             console.log('email not found or email is not confirmed')
             return false;
         }
-
         return bcrypt.compare(password, dbUser.password);
     }
 
@@ -98,7 +104,15 @@ class AuthService {
         if (!user) {
             return CustomResponse.userNotFound;
         }
-        // if email already confirmed, return false
+        const validUntil = user.confirmationCodeValidUntil
+        const now = new Date()
+        // check valid until - now, if positive, its is in the past
+        if ((now.getTime() - validUntil.getTime()) > 0) {
+            console.log('valid Until is in the past, deleting the account...')
+            await knex("users").where({ confirmationCode: confirmationCode }).del()
+            return CustomResponse.confirmationCodeExpired
+        }
+        // if email already confirmed, return alreadyConfirmed
         if (user["confirmed"] == true) {
             return CustomResponse.alreadyConfirmed;
         }
