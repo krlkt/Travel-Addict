@@ -10,6 +10,7 @@ async function up(knex) {
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.boolean('confirmed').notNullable();
         table.string('confirmationCode').unique();
+        table.timestamp('confirmationCodeValidUntil');
     });
 }
 exports.up = up;

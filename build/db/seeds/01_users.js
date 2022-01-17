@@ -11,10 +11,12 @@ async function seed(knex) {
     const salt = await bcrypt_1.default.genSalt();
     const hunterpasswordHash = await bcrypt_1.default.hash('hunter2', salt);
     const adminpasswordHash = await bcrypt_1.default.hash('admin', salt);
+    const date = new Date();
+    date.setFullYear(4000);
     // Inserts seed entries
     await knex("users").insert([
-        { id: '1eaae687-ad09-4824-b53d-0d7563d98080', email: 'huehne@htw-berlin.de', password: hunterpasswordHash, confirmed: true },
-        { id: '24ce658d-9a12-4783-96ad-924464e68080', email: 'admin@ta', password: adminpasswordHash, confirmed: true },
+        { id: '1eaae687-ad09-4824-b53d-0d7563d98080', email: 'huehne@htw-berlin.de', password: hunterpasswordHash, confirmed: true, confirmationCodeValidUntil: date },
+        { id: '24ce658d-9a12-4783-96ad-924464e68080', email: 'admin@ta', password: adminpasswordHash, confirmed: true, confirmationCodeValidUntil: date },
     ]);
 }
 exports.seed = seed;

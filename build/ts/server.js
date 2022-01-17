@@ -109,11 +109,11 @@ app.post("/user", (req, res) => {
         }
     });
 });
-app.get("/user", async (req, res) => {
-    authService.getAll().then((total) => {
-        res.send(total);
-    });
-});
+// app.get("/user", async (req, res) => {
+//     authService.getAll().then((total) => {
+//         res.send(total)
+//     });
+// });
 app.get("/confirm/:confirmationCode", async (req, res) => {
     const confirmationCode = req.params.confirmationCode;
     authService.confirmAccount(confirmationCode).then((response) => {
@@ -128,6 +128,10 @@ app.get("/confirm/:confirmationCode", async (req, res) => {
         else if (response == AuthService_2.CustomResponse.userNotFound) {
             res.status(400);
             res.send({ message: "User with that confirmation code was not found!" });
+        }
+        else if (response == AuthService_2.CustomResponse.confirmationCodeExpired) {
+            res.status(400);
+            res.send({ message: "The confirmation code has expired. Please register again ✌️" });
         }
         else {
             res.status(400);
